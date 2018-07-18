@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = 'purest'
-  s.version     = '0.0.1'
+  s.version     = '0.1.0'
   s.date        = '2018-06-29'
   s.summary     = "A ruby gem for interacting with PURE storage's REST API"
   s.authors     = ['Sean McKinley']
