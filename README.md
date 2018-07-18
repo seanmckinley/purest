@@ -1,4 +1,4 @@
-# Purest -- a simple gem for interacting with Pure Storage's REST API
+# Purest (or Pure Rest, if you will) -- a simple gem for interacting with Pure Storage's REST API
 
 A simple to use library for Ruby, inspired by the WeAreFarmGeek's Diplomat gem (seriously, those guys are awesome), allowing for easy interaction with Pure Storage's REST API.
 
@@ -6,7 +6,7 @@ A simple to use library for Ruby, inspired by the WeAreFarmGeek's Diplomat gem (
 
 To be captain obvious, this does require you have access to a Pure Storage array.
 
-I wrote this using Ruby 2.5.1 testing against API version 1.11 (so far), but I imagine anything 2.0+ will be fine- I haven't done anything too crazy. I also imagine any api version > 1.0 will work, but I can't speak to that with certainty- if you notice breakage or oddities with older versions raise an issue and I'll check it out.
+This library requires you use Ruby 2.3 or above.
 
 # Usage
 
@@ -38,25 +38,34 @@ Below I'll provide a large group of examples, but I won't be detailing every sin
 Getting volumes:
 ```ruby
 # Get the full list of volumes
-volumes = Purest::Volume.get
+Purest::Volume.get
 
 # Get a single volume
-volume = Purest::Volume.get(:name => 'volume1')
+Purest::Volume.get(:name => 'volume1')
 
 # Get monitoring information about a volume
-volume = Purest::Volume.get(:name => 'volume1', :action => 'monitor')
+Purest::Volume.get(:name => 'volume1', :action => 'monitor')
 
 # Get multiple volumes
-volumes = Purest::Volume.get(:names => ['volume1', 'volume2'])
+Purest::Volume.get(:names => ['volume1', 'volume2'])
 
 # Get a list of snapshots
-snapshots = Purest::Volume.get(:snap => true)
+Purest::Volume.get(:snap => true)
 
 # Get a single snapshot
-snapshot = Purest::Volume.get(:name => 'volume1', :snap => true)
+Purest::Volume.get(:name => 'volume1', :snap => true)
 
 # Get multiple snapshots
-snapshots = Purest::Volume.get(:names => ['volume1', 'volume2'], :snap => true)
+Purest::Volume.get(:names => ['volume1', 'volume2'], :snap => true)
+
+# List block differences for the specified snapshot
+Purest::Volume.get(:name => 'volume1.snap', :show_diff => true, :block_size => 512, :length => '2G')
+
+# List shared connections for a specified volume
+Purest::Volume.get(:name => 'volume1', :show_hgroup => true)
+
+# List private connections for a specified volume
+Purest::Volume.get(:name => 'volume1', :show_host => true)
 ```
 
 Creating volumes:
@@ -174,6 +183,71 @@ Update the attributes on an array:
 Purest::PhysicalArray.update(:new_name => 'new_name')
 ```
 
+Disconnect the current array from a specified array:
+```ruby
+# Given that your pure is purehost.yourdomain.com, as defined in the config block above
+# Disconnect purehost2.yourdomain.com from yours
+Purest::PhysicalArray.delete(:name => 'purehost2.yourdomain.com')
+```
+
+# Host Groups
+Getting information about host groups
+```ruby
+# Get a list of host groups
+Purest::HostGroup.get
+
+# Get a single host group
+Purest::HostGroup.get(:name => 'hgroup1')
+
+# Get a list of host groups, with monitoring information
+Purest::HostGroup.get(:names => ['hgroup1', 'hgroup2'], :action => 'monitor')
+
+# Get a list of volumes associated with a specified host
+Purest::HostGroup.get(:name => 'hgroup1', :show_volumes => true)
+```
+
+Creating host groups
+```ruby
+# Create a host group with a specified name
+Purest::HostGroup.create(:name => 'hgroup1')
+
+# Create a host group and supply its host members
+Purest::HostGroup.create(:name => 'hgroup1', :hostlist => ['host1', 'host2'])
+
+# Add a host group to a protection group
+Purest::HostGroup.create(:name => 'hgroup1', :protection_group => 'pgroup1')
+
+# Connect a volume to all hosts in a specified host group
+Purest::HostGroup.create(:name => 'hgroup1', :volume => 'v3')
+```
+
+Updating host groups
+```ruby
+# Renaming a host group
+Purest::HostGroup.update(:name => 'hgroup1', :new_name => 'hgroup1-renamed')
+
+# Replace the list of member hosts
+Purest::HostGroup.update(:name => 'hgroup1', :hostlist => ['host1', 'host2'])
+
+# Add a list of hosts to existing host list
+Purest::HostGroup.update(:name => 'hgroup1', :addhostlist => ['host3', 'host4'])
+
+# Remove a list of hosts from a host list
+Purest::HostGroup.update(:name => 'hgroup1', :remhostlist => ['host1'])
+```
+
+Deleting host groups
+```ruby
+# Delete a host group
+Purest::HostGroup.delete(:name => 'hgroup1')
+
+# Remove a host group member from a protection group
+Purest::HostGroup.delete(:name => 'hgroup1', :protection_group => 'pgroup1')
+
+# Break the connection between a host group and a volume
+Purest::HostGroup.delete(:name => 'hgroup1', :volume => 'volume1')
+```
+
 # Specs
 This library is tested with rspec, to execute the specs merely run
 ```
@@ -196,6 +270,6 @@ Execute integration tests:
 rspec -t integration
 ```
 
-By default, this will run against version 1.1 to 1.11 of the API. This is useful for ensuring functionality added/subtracted to this project is programmatically tested against all versions of the API.
+By default, this will run against version 1.1 to 1.11 of the API. This is useful for ensuring functionality added/subtracted to this project is programmatically tested against all versions of the API. I mostly did this as an exercise, that being said I think it provides a lot of usefulness and if it can be improved let me know (or submit a PR).
 
 It is worth mentioning, this generates a fair bit of work for your Pure array so...you've been warned.
