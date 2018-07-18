@@ -2,6 +2,15 @@
 
 A simple to use library for Ruby, inspired by the WeAreFarmGeek's Diplomat gem (seriously, those guys are awesome), allowing for easy interaction with Pure Storage's REST API.
 
+## Disclaimer
+This started as sort of a labor of love/learning exercise, and sort of blossomed into this. That being said, it means a few things:
+
+1) I may have made some stupid mistakes in here, if so..so be it. Raise them in issues or submit PRs, and I'll gladly fix/merge if I feel the code submitted carries the spirit of my little project. Odds are I won't reject a PR unless you try to rewrite everything for some obtuse reason I don't agree with.
+
+2) I am not affiliated with Pure Storage, beyond the fact that my company uses their product.
+
+3) This isn't done. What I think of as the 'core' functionality is there- you can manipulate volumes, hosts, and host groups, along with the array itself. I still need to add in classes for ProtectionGroups, Alerts/Messages, SNMP Manager Connections, SSL, Network Interfaces, Hardware, Apps, and Users.
+
 ## Requirements
 
 To be captain obvious, this does require you have access to a Pure Storage array.
