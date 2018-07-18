@@ -31,7 +31,7 @@ module Purest
   self.root_path = File.expand_path __dir__
   self.lib_path = File.expand_path 'purest', __dir__
 
-  require_libs 'custom_exceptions', 'configuration', 'rest', 'host', 'host_group', 'volume', 'physical_array'
+  require_libs 'custom_exceptions', 'configuration', 'rest', 'host', 'host_group', 'physical_array', 'protection_group', 'volume'
 
   self.configuration ||= Purest::Configuration.new
 

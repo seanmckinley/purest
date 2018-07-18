@@ -4,7 +4,6 @@ module Purest
   # Base class for interacting with PURE storage REST API
   class Rest < Purest::CustomExceptions
     @access_methods = []
-    @get_params = []
 
     # Initialize the fadaray connection, create session unless one exists
     def initialize
@@ -74,6 +73,31 @@ module Purest
           end
         end
       end
+    end
+
+    def get(options = nil, path = nil, params = nil)
+      @options = options
+      create_session unless authenticated?
+
+      raw_resp = @conn.get do |req|
+        url = ["/api/#{Purest.configuration.api_version}/#{path}"]
+
+        params.each do |param|
+          self.class.send(:define_method, :"use_#{param}") do |options|
+            options ? use_named_parameter(param, options[param]) : []
+          end
+        end
+
+        # Generate array, consisting of url parts, to be built
+        # by concat_url method below
+        params.each do |param|
+          url += self.send(:"use_#{param}",@options)
+        end
+
+        req.url concat_url url
+      end
+
+      JSON.parse(raw_resp.body, :symbolize_names => true)
     end
 
     private
