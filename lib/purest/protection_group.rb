@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
 module Purest
-  class ProtectionGroup < Purest::Rest
+  class ProtectionGroup < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
     GET_PARAMS = [:pending]

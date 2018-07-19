@@ -132,6 +132,9 @@ Purest::Host.get(:name => 'host123')
 
 # Get a list of hosts, by name, on an array
 Purest::Host.get(:names => ['host123', 'host456'])
+
+# Get volumes associated with specific host
+Purest::Host.get(:name => 'hgroup1', :show_volume => true)
 ```
 
 Creating hosts:
@@ -212,7 +215,7 @@ Purest::HostGroup.get(:name => 'hgroup1')
 Purest::HostGroup.get(:names => ['hgroup1', 'hgroup2'], :action => 'monitor')
 
 # Get a list of volumes associated with a specified host
-Purest::HostGroup.get(:name => 'hgroup1', :show_volumes => true)
+Purest::HostGroup.get(:name => 'hgroup1', :show_volume => true)
 ```
 
 Creating host groups

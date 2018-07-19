@@ -75,7 +75,7 @@ describe Purest::Host do
           }).
           to_return(status: 200, body: JSON.generate([]), headers: {})
 
-        host_snapshots = Purest::Host.get(:name => 'h1', :show_volumes => true)
+        host_snapshots = Purest::Host.get(:name => 'h1', :show_volume => true)
 
         expect(host_snapshots).to be_an(Array)
       end
@@ -89,10 +89,6 @@ describe Purest::Host do
     end
     context 'when creating a host' do
       context 'with no params' do
-        it 'must have a name supplied' do
-          expect{ Purest::Host.create }.to raise_error(Purest::CustomExceptions::RequiredArgument, ':name required when creating a host')
-          expect{ Purest::Host.create(:not_name => 'notahostname') }.to raise_error(Purest::CustomExceptions::RequiredArgument, ':name required when creating a host')
-        end
         it 'posts to the correct url' do
           stub_request(:post, "https://purehost.com/api/1.11/host/new_host").
           with(

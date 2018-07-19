@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
 module Purest
-  class HostGroup < Purest::Rest
+  class HostGroup < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
     GET_PARAMS = [:action, :block_size, :connect, :historical, :length, :names,
@@ -11,24 +11,7 @@ module Purest
     # Get a list of hostgroups, GET
     # @param options [Hash] options to pass in
     def get(options = nil)
-      @options = options
-      create_session unless authenticated?
-
-      raw_resp = @conn.get do |req|
-        url = ["/api/#{Purest.configuration.api_version}/hgroup"]
-        url.map!{|u| u + "/#{@options[:name]}"} if !@options.nil? && @options[:name]
-        url.map!{|u| u + "/volume"} if !@options.nil? && @options[:name] && @options[:show_volumes]
-
-        # Generate array, consisting of url parts, to be built
-        # by concat_url method below
-        GET_PARAMS.each do |param|
-          url += self.send(:"use_#{param}",@options)
-        end
-
-        req.url concat_url url
-      end
-
-      JSON.parse(raw_resp.body, :symbolize_names => true)
+      super(options, 'hgroup', GET_PARAMS, [:show_volume])
     end
 
     def create(options = nil)

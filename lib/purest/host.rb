@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Purest
-  class Host < Purest::Rest
+  class Host < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
     GET_PARAMS = [:action, :all, :chap, :connect, :names, :personality,
@@ -10,33 +10,13 @@ module Purest
     # Get a list of hosts, GET
     # @param options [Hash] options to pass
     def get(options = nil)
-      @options = options
-      create_session unless authenticated?
-
-      raw_resp = @conn.get do |req|
-        url = ["/api/#{Purest.configuration.api_version}/host"]
-        url.map!{|u| u + "/#{@options[:name]}"} if !@options.nil? && @options[:name]
-        url.map!{|u| u + "/volume"} if !@options.nil? && @options[:show_volumes]
-
-        # Generate array, consisting of url parts, to be built
-        # by concat_url method below
-        GET_PARAMS.each do |param|
-          url += self.send(:"use_#{param}",@options)
-        end
-
-        # Build url from array of parts, send request
-        req.url concat_url url
-      end
-
-      JSON.parse(raw_resp.body, :symbolize_names => true)
+      super(options, 'host', GET_PARAMS, [:show_volume])
     end
 
     # Create a host, POST
     # @param options [Hash] options to pass
     def create(options = nil)
       @options = options
-
-      raise RequiredArgument, ':name required when creating a host' if @options.nil? || @options[:name].nil?
       create_session unless authenticated?
 
       raw_resp = @conn.post do |req|

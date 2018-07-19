@@ -35,7 +35,7 @@ describe Purest::PhysicalArray do
        	    'User-Agent'=>'Faraday v0.15.2'
             }).
             to_return(status: 200, body: JSON.generate([]), headers: {})
-        arrays = Purest::PhysicalArray.get(:connection => true)
+        arrays = Purest::PhysicalArray.get(:show_connection => true)
         expect(arrays).to be_an(Array)
       end
     end

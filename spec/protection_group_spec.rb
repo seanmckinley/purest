@@ -11,7 +11,7 @@ describe Purest::ProtectionGroup do
       allow_any_instance_of(Purest::ProtectionGroup).to receive(:authenticated?).and_return(true)
     end
     context 'No options passed' do
-      it 'should get back a list of hosts on an array' do
+      it 'should get back a list of protection groups' do
         stub_request(:get, "https://purehost.com/api/1.11/pgroup").
           with(
             headers: {

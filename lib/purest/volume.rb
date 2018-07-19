@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Purest
-  class Volume < Purest::Rest
+  class Volume < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
     GET_PARAMS = [:action, :block_size, :connect, :historical, :length, :names,
@@ -11,33 +11,7 @@ module Purest
     # Get a list of volumes, GET
     # @param options [Hash] options to pass
     def get(options = nil)
-      @options = options
-      create_session unless authenticated?
-
-      # Build up a url from parts, allowing for dynamic http calls
-      # by simply passing in params accepted by Pure's API
-      raw_resp = @conn.get do |req|
-        url = ["/api/#{Purest.configuration.api_version}/volume"]
-
-        url.map!{|u| u + "/#{@options[:name]}"} if !@options.nil? && @options[:name]
-
-        # Map /diff, /hgroup, or /host depending on option passed
-        [:show_diff, :show_hgroup, :show_host].each do |path|
-          new_path = path.to_s.gsub('show_', '')
-          url.map!{|u| u + "/#{new_path}"} if !@options.nil? && @options[path]
-        end
-
-        # Generate array, consisting of url parts, to be built
-        # by concat_url method below
-        GET_PARAMS.each do |param|
-          url += self.send(:"use_#{param}",@options)
-        end
-
-        # Build url from array of parts, send request
-        req.url concat_url url
-      end
-
-      JSON.parse(raw_resp.body, :symbolize_names => true)
+      super(options, 'volume', GET_PARAMS, [:show_diff, :show_hgroup, :show_host])
     end
 
     # Create a volume, POST

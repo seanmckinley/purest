@@ -48,7 +48,7 @@ describe Purest::HostGroup do
        	    'User-Agent'=>'Faraday v0.15.2'
             }).
             to_return(status: 200, body: JSON.generate([]), headers: {})
-        host_group = Purest::HostGroup.get(:name => 'hgroup123', :show_volumes => true)
+        host_group = Purest::HostGroup.get(:name => 'hgroup123', :show_volume => true)
         expect(host_group).to be_an(Array)
       end
     end

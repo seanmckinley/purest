@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Purest
-  class PhysicalArray < Purest::Rest
+  class PhysicalArray < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
     GET_PARAMS = [:action, :banner, :connection_key, :controllers, :historical,
@@ -11,29 +11,7 @@ module Purest
     # Get a list of hosts, GET
     # @param options [Hash] options to pass
     def get(options = nil)
-      @options = options
-      create_session unless authenticated?
-
-      raw_resp = @conn.get do |req|
-        url = ["/api/#{Purest.configuration.api_version}/array"]
-
-        # Map /connection, /console_lock, /phonehome, /remoteassist
-        # depending on what was passed in
-        [:connection, :console_lock, :phonehome, :remoteassist].each do |path|
-          url.map!{|u| u + "/#{path.to_s}"} if !@options.nil? && @options[path]
-        end
-
-        # Generate array, consisting of url parts, to be built
-        # by concat_url method below
-        GET_PARAMS.each do |param|
-          url += self.send(:"use_#{param}",@options)
-        end
-
-        # Build url from array of parts, send request
-        req.url concat_url url
-      end
-
-      JSON.parse(raw_resp.body, :symbolize_names => true)
+      super(options, 'array', GET_PARAMS, [:show_connection, :show_console_lock, :show_phonehome, :show_remoteassist])
     end
 
     # Create a connection between two arrays
