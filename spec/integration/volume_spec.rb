@@ -46,14 +46,17 @@ describe Purest::Volume, :integration => true do
     end
     context 'when attaching a volume to a protection group' do
       API_VERSIONS.each do |version|
-        xit "actually creates a host on api version #{version}" do
+        it "actually creates a host on api version #{version}" do
           Purest.configuration.api_version = version
-          protection_group = Purest::ProtectionGroup.create(:name => 'integration-test-pgroup')
+          protection_group = Purest::ProtectionGroup.create(:name => 'integration-tester-pgroup')
           create_volume = Purest::Volume.create(:name => 'integration-tester', :size => '10G')
           attach_volume_to_pgroup = Purest::Volume.create(:name => 'integration-tester', :protection_group => 'integration-tester-pgroup')
 
-          binding.pry
-          expect
+          expect(Purest::Volume.get(:protect => true, :name => 'integration-tester').first[:protection_group]).to eq('integration-tester-pgroup')
+
+          Purest::Volume.delete(:name => 'integration-tester', :protection_group => 'integration-tester-pgroup')
+          Purest::Volume.delete(:name => 'integration-tester', :eradicate => true)
+          Purest::ProtectionGroup.delete(:name => 'integration-tester-pgroup', :eradicate => true)
         end
       end
     end

@@ -75,4 +75,52 @@ describe Purest::ProtectionGroup do
       end
     end
   end
+  describe '#put' do
+    before do
+      allow_any_instance_of(Purest::ProtectionGroup).to receive(:authenticated?).and_return(true)
+    end
+    context 'creating a snapshot of one or more protection groups' do
+      it 'should post to the correct url, with some options' do
+        stub_request(:put, "https://purehost.com/api/1.11/pgroup/pgroup1").
+          with(
+            body: "{\"name\":\"pgroup1-renamed\"}",
+            headers: {
+       	    'Accept'=>'*/*',
+       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	    'User-Agent'=>'Faraday v0.15.2'
+            }).
+            to_return(status: 200, body: JSON.generate([]), headers: {})
+
+        protection_groups = Purest::ProtectionGroup.update(:name => 'pgroup1', :new_name => 'pgroup1-renamed')
+      end
+    end
+  end
+  describe '#delete' do
+    before do
+      allow_any_instance_of(Purest::ProtectionGroup).to receive(:authenticated?).and_return(true)
+    end
+    context 'eradicating a protection group' do
+      it 'should delete to the correct url, with the correct http body' do
+        stub_request(:delete, "https://purehost.com/api/1.11/pgroup/pgroup1").
+          with(
+            headers: {
+       	    'Accept'=>'*/*',
+       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	    'User-Agent'=>'Faraday v0.15.2'
+            }).
+            to_return(status: 200, body: JSON.generate([]), headers: {})
+        stub_request(:delete, "https://purehost.com/api/1.11/pgroup/pgroup1").
+          with(
+            body: "{\"eradicate\":true}",
+            headers: {
+       	    'Accept'=>'*/*',
+       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	    'User-Agent'=>'Faraday v0.15.2'
+            }).
+            to_return(status: 200, body: JSON.generate([]), headers: {})
+
+        protection_groups = Purest::ProtectionGroup.delete(:name => 'pgroup1', :eradicate => true)
+      end
+    end
+  end
 end

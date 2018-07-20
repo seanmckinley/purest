@@ -73,5 +73,47 @@ module Purest
 
       JSON.parse(raw_resp.body, :symbolize_names => true)
     end
+
+    def update(options = nil, path = nil)
+      @options = options
+      create_session unless authenticated?
+
+      raw_resp = @conn.put do |req|
+        url = "/api/#{Purest.configuration.api_version}/#{path}"
+        url += "/#{@options[:name]}" if @options[:name]
+
+        # Since :name and :new_name are used the same throughout almost every class
+        # it seems reasonable to do this here
+        @options[:name] = @options.delete(:new_name) if !@options.nil? && @options[:new_name]
+
+        req.body = @options.to_json
+
+        req.url url
+      end
+
+      JSON.parse(raw_resp.body, :symbolize_names => true)
+    end
+
+    def delete(options = nil, path = nil, appended_path = nil)
+      @options = options
+
+      raw_resp = @conn.delete do |req|
+        url = "/api/#{Purest.configuration.api_version}/#{path}/#{@options[:name]}"
+        url += "#{appended_path}" if appended_path
+
+        req.url url
+      end
+
+      # Unfortuantely this can't all be done in a single request, so if you
+      # want to eradicate a subsequent request has to be made :(
+      if @options[:eradicate]
+        raw_resp = @conn.delete do |req|
+          req.url "/api/#{Purest.configuration.api_version}/#{path}/#{@options[:name]}"
+          req.body = @options.to_json
+        end
+      end
+
+      JSON.parse(raw_resp.body, :symbolize_names => true)
+    end
   end
 end
