@@ -90,7 +90,7 @@ Purest::Volume.create(:name => 'volume, ':source => 'other_vol')
 Purest::Volume.create(:name => 'volume', :source => 'other_vol', :overwrite => true)
 
 # Add a volume to a protection group
-Purest::Volume.create(:name => 'volume', :pgroup => 'protection-group')
+Purest::Volume.create(:name => 'volume', :protection_group => 'protection-group')
 ```
 
 Updating volumes
@@ -115,7 +115,7 @@ Purest::Volume.delete(:name => 'volume_to_delete')
 Purest::Volume.delete(:name => 'volume_to_delete', :eradicate => true)
 
 # Deleting a volume from a protection group
-Purest::Volume.delete(:name => 'volume', :pgroup => 'pgroup1')
+Purest::Volume.delete(:name => 'volume', :protection_group => 'pgroup1')
 ```
 
 ## Hosts
@@ -260,6 +260,43 @@ Purest::HostGroup.delete(:name => 'hgroup1', :protection_group => 'pgroup1')
 Purest::HostGroup.delete(:name => 'hgroup1', :volume => 'volume1')
 ```
 
+# Protection Groups
+Getting information about protection groups
+```ruby
+# Get a list of protection groups
+Purest::ProtectionGroup.get
+
+# Get a list of protection groups pending deletion
+Purest::ProtectionGroup.get(:pending => true)
+```
+
+Creating protection groups
+```ruby
+# Create a protection group
+Purest::ProtectionGroup.create(:name => 'pgroup1')
+
+# Create a protection group with a host list
+Purest::ProtectionGroup.create(:name => 'pgroup1', :hostlist => ['host1', 'host2'])
+```
+
+Updating protection groups
+```ruby
+# Renaming a protection group
+Purest::ProtectionGroup.update(:name => 'pgroup1', :new_name => 'pgroup1-renamed')
+
+# Add a list of hosts to an existing protection group's host list
+Purest::ProtectionGroup.update(:name => 'pgroup1', :addhostlist => ['host3', 'host4'])
+```
+
+Deleting a protection group
+```ruby
+# Delete it, but allow for it to remain during the 24 hour grace period
+Purest::ProtectionGroup.delete(:name => 'pgroup1')
+
+# Delete it, with extreme prejudice
+Purest::ProtectionGroup.delete(:name => 'pgroup1', :eradicate => true)
+```
+
 # Specs
 This library is tested with rspec, to execute the specs merely run
 ```
@@ -292,6 +329,5 @@ API_VERSION=1.1,1.2,1.5 rspec -t integration
 ALL_VERSIONS=true rspec -t integration
 ```
 
-By default, this will run against version 1.1 to 1.11 of the API. This is useful for ensuring functionality added/subtracted to this project is programmatically tested against all versions of the API. I mostly did this as an exercise, that being said I think it provides a lot of usefulness and if it can be improved let me know (or submit a PR).
 
 It is worth mentioning, this generates a fair bit of work for your Pure array so...you've been warned.
