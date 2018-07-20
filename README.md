@@ -43,6 +43,7 @@ https://purehost.yourdomain.com/static/0/help/rest/.
 Below I'll provide a large group of examples, but I won't be detailing every single method call with all of its possible options, for that I will again refer you to Pure's REST API docs.
 
 # Examples
+
 ## Volumes
 Getting volumes:
 ```ruby
@@ -173,36 +174,7 @@ Purest::Host.delete(:name => 'host123', :protection_group => 'pgroup123')
 Purest::Host.delete(:name => 'host123', :volume => 'volume123')
 ```
 
-# Physical Arrays
-
-List the attributes on an array:
-```ruby
-# List all the attributes
-Purest::PhysicalArray.get
-
-# List connected arrays
-Purest::PhysicalArray.get(:connection => true)
-```
-
-Create a connection between two arrays:
-```ruby
-Purest::PhysicalArray.create(:connection_key => '<key>', :management_address => 'hostname', :type => ['replication'])
-```
-
-Update the attributes on an array:
-```ruby
-# rename an array
-Purest::PhysicalArray.update(:new_name => 'new_name')
-```
-
-Disconnect the current array from a specified array:
-```ruby
-# Given that your pure is purehost.yourdomain.com, as defined in the config block above
-# Disconnect purehost2.yourdomain.com from yours
-Purest::PhysicalArray.delete(:name => 'purehost2.yourdomain.com')
-```
-
-# Host Groups
+## Host Groups
 Getting information about host groups
 ```ruby
 # Get a list of host groups
@@ -260,7 +232,36 @@ Purest::HostGroup.delete(:name => 'hgroup1', :protection_group => 'pgroup1')
 Purest::HostGroup.delete(:name => 'hgroup1', :volume => 'volume1')
 ```
 
-# Protection Groups
+## Physical Arrays
+
+List the attributes on an array:
+```ruby
+# List all the attributes
+Purest::PhysicalArray.get
+
+# List connected arrays
+Purest::PhysicalArray.get(:connection => true)
+```
+
+Create a connection between two arrays:
+```ruby
+Purest::PhysicalArray.create(:connection_key => '<key>', :management_address => 'hostname', :type => ['replication'])
+```
+
+Update the attributes on an array:
+```ruby
+# rename an array
+Purest::PhysicalArray.update(:new_name => 'new_name')
+```
+
+Disconnect the current array from a specified array:
+```ruby
+# Given that your pure is purehost.yourdomain.com, as defined in the config block above
+# Disconnect purehost2.yourdomain.com from yours
+Purest::PhysicalArray.delete(:name => 'purehost2.yourdomain.com')
+```
+
+## Protection Groups
 Getting information about protection groups
 ```ruby
 # Get a list of protection groups
@@ -297,7 +298,7 @@ Purest::ProtectionGroup.delete(:name => 'pgroup1')
 Purest::ProtectionGroup.delete(:name => 'pgroup1', :eradicate => true)
 ```
 
-# Port
+## Port
 Getting information about ports, 'cause that's all you get to do
 ```ruby
 # Get port information

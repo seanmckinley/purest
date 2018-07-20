@@ -21,7 +21,7 @@ describe Purest::App do
        	    'User-Agent'=>'Faraday v0.15.2'
             }).
             to_return(status: 200, body: JSON.generate([]), headers: {})
-        volumes = Purest::App.get(:initiators => true)
+        apps = Purest::App.get
       end
     end
   end

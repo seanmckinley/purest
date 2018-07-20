@@ -21,7 +21,7 @@ describe Purest::Port do
        	    'User-Agent'=>'Faraday v0.15.2'
             }).
             to_return(status: 200, body: JSON.generate([]), headers: {})
-        volumes = Purest::Port.get(:initiators => true)
+        port_info = Purest::Port.get(:initiators => true)
       end
     end
   end
