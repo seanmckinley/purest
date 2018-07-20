@@ -3,14 +3,13 @@
 require 'spec_helper'
 
 describe Purest::Host do
-  let(:faraday) { fake }
-
   it { expect(described_class).to be < Purest::Rest}
 
+  before do
+    allow_any_instance_of(Purest::Host).to receive(:authenticated?).and_return(true)
+  end
+
   describe '#get' do
-    before do
-      allow_any_instance_of(Purest::Host).to receive(:authenticated?).and_return(true)
-    end
     context 'No options passed' do
       it 'should get back a list of hosts on an array' do
         stub_request(:get, "https://purehost.com/api/1.11/host").
@@ -81,97 +80,29 @@ describe Purest::Host do
       end
     end
   end
-  end
-
-  describe '#post' do
-    before do
-      allow_any_instance_of(Purest::Host).to receive(:authenticated?).and_return(true)
-    end
-    context 'when creating a host' do
-      context 'with no params' do
-        it 'posts to the correct url' do
-          stub_request(:post, "https://purehost.com/api/1.11/host/new_host").
-          with(
-            body: "{\"name\":\"new_host\"}",
-            headers: {
-     	      'Accept'=>'*/*',
-     	      'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-     	      'Content-Type'=>'application/json',
-     	      'User-Agent'=>'Faraday v0.15.2'
-            }).
-          to_return(status: 200, body: JSON.generate([]), headers: {})
-          new_host = Purest::Host.create(:name => 'new_host')
-        end
-      context 'with an iqnlist' do
-        it 'posts to the correct url, with the correct params' do
-          stub_request(:post, "https://purehost.com/api/1.11/host/new_host").
-          with(
-            body: "{\"name\":\"new_host\",\"iqnlist\":[\"1\"]}",
-            headers: {
-       	    'Accept'=>'*/*',
-       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-       	    'Content-Type'=>'application/json',
-       	    'User-Agent'=>'Faraday v0.15.2'
-            }).
-          to_return(status: 200, body: JSON.generate([]), headers: {})
-          new_host = Purest::Host.create(:name => 'new_host', :iqnlist => ['1'])
-        end
-      end
-    end
-    context 'when adding a host to a protection group' do
-      it 'posts to the correct url' do
-        stub_request(:post, "https://purehost.com/api/1.11/host/host123/pgroup/pgroup123").
-          with(
-            headers: {
-       	    'Accept'=>'*/*',
-       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-       	    'User-Agent'=>'Faraday v0.15.2'
-            }).
-          to_return(status: 200, body: JSON.generate([]), headers: {})
-        new_pgroup = Purest::Host.create(:name => 'host123', :protection_group => 'pgroup123')
-      end
-    end
-    context 'when connecting a volume to a host' do
-      it 'posts to the correct url' do
-        stub_request(:post, "https://purehost.com/api/1.11/host/host123/volume/volume1").
-          with(
-            headers: {
-       	    'Accept'=>'*/*',
-       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-       	    'User-Agent'=>'Faraday v0.15.2'
-            }).
-          to_return(status: 200, body: JSON.generate([]), headers: {})
-        new_pgroup = Purest::Host.create(:name => 'host123', :volume => 'volume1')
-      end
-    end
-  end
 
   describe '#put' do
     before do
       allow_any_instance_of(Purest::Host).to receive(:authenticated?).and_return(true)
     end
-    context 'when updating a host' do
-      context  'by renaming it' do
-        it 'should put to the correct url, with the correct params' do
-          stub_request(:put, "https://purehost.com/api/1.11/host/host123").
-            with(
-              body: "{\"name\":\"host456\"}",
-              headers: {
-       	      'Accept'=>'*/*',
-       	      'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-       	      'User-Agent'=>'Faraday v0.15.2'
-              }).
-            to_return(status: 200, body: JSON.generate([]), headers: {})
+    context 'when renaming a host' do
+      it 'should put to the correct url, with the correct params' do
+        stub_request(:put, "https://purehost.com/api/1.11/host/host123").
+          with(
+            body: "{\"name\":\"host456\"}",
+            headers: {
+            'Accept'=>'*/*',
+            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'User-Agent'=>'Faraday v0.15.2'
+            }).
+          to_return(status: 200, body: JSON.generate([]), headers: {})
 
-            renamed_host = Purest::Host.update(:name => 'host123', :new_name => 'host456')
-        end
+        renamed_host = Purest::Host.update(:name => 'host123', :new_name => 'host456')
       end
     end
   end
+
   describe '#delete' do
-    before do
-      allow_any_instance_of(Purest::Host).to receive(:authenticated?).and_return(true)
-    end
     context 'when deleting a host' do
       it 'should delete to the correct url' do
         stub_request(:delete, "https://purehost.com/api/1.11/host/host123").
@@ -212,6 +143,70 @@ describe Purest::Host do
           to_return(status: 200, body: JSON.generate([]), headers: {})
 
         removed_pgroup = Purest::Host.delete(:name => 'host123', :volume => 'volume123')
+      end
+    end
+  end
+
+  describe '#post' do
+    before do
+      allow_any_instance_of(Purest::Host).to receive(:authenticated?).and_return(true)
+    end
+    context 'when creating a host' do
+      context 'with no params' do
+        it 'posts to the correct url' do
+          stub_request(:post, "https://purehost.com/api/1.11/host/new_host").
+          with(
+            body: "{\"name\":\"new_host\"}",
+            headers: {
+     	      'Accept'=>'*/*',
+     	      'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+     	      'Content-Type'=>'application/json',
+     	      'User-Agent'=>'Faraday v0.15.2'
+            }).
+          to_return(status: 200, body: JSON.generate([]), headers: {})
+          new_host = Purest::Host.create(:name => 'new_host')
+        end
+      end
+      context 'with an iqnlist' do
+        it 'posts to the correct url, with the correct params' do
+          stub_request(:post, "https://purehost.com/api/1.11/host/new_host").
+          with(
+            body: "{\"name\":\"new_host\",\"iqnlist\":[\"1\"]}",
+            headers: {
+       	    'Accept'=>'*/*',
+       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	    'Content-Type'=>'application/json',
+       	    'User-Agent'=>'Faraday v0.15.2'
+            }).
+          to_return(status: 200, body: JSON.generate([]), headers: {})
+          new_host = Purest::Host.create(:name => 'new_host', :iqnlist => ['1'])
+        end
+      end
+    end
+    context 'when adding a host to a protection group' do
+      it 'posts to the correct url' do
+        stub_request(:post, "https://purehost.com/api/1.11/host/host123/pgroup/pgroup123").
+          with(
+            headers: {
+       	    'Accept'=>'*/*',
+       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	    'User-Agent'=>'Faraday v0.15.2'
+            }).
+          to_return(status: 200, body: JSON.generate([]), headers: {})
+        new_pgroup = Purest::Host.create(:name => 'host123', :protection_group => 'pgroup123')
+      end
+    end
+    context 'when connecting a volume to a host' do
+      it 'posts to the correct url' do
+        stub_request(:post, "https://purehost.com/api/1.11/host/host123/volume/volume1").
+          with(
+            headers: {
+       	    'Accept'=>'*/*',
+       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	    'User-Agent'=>'Faraday v0.15.2'
+            }).
+          to_return(status: 200, body: JSON.generate([]), headers: {})
+        new_pgroup = Purest::Host.create(:name => 'host123', :volume => 'volume1')
       end
     end
   end
