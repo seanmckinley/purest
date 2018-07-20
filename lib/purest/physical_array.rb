@@ -14,17 +14,8 @@ module Purest
       super(options, 'array', GET_PARAMS, [:show_connection, :show_console_lock, :show_phonehome, :show_remoteassist])
     end
 
-    # Create a connection between two arrays
-    # @param options [Hash] options to pass
     def create(options = nil)
-      @options = options
-
-      raw_resp = @conn.post do |req|
-        req.url "/api/#{Purest.configuration.api_version}/array/connection"
-        req.body = @options.to_json
-      end
-
-      JSON.parse(raw_resp.body, :symbolize_names => true)
+      super(options, 'array/connection')
     end
 
     # Update attributes on an array, PUT

@@ -172,9 +172,8 @@ describe Purest::Volume do
         JSON.generate(:name=>'v1', :protection_group=>'pgroup1')
       end
       it 'posts to the correct URL' do
-        stub_request(:post, "#{Purest.configuration.url}/api/#{Purest.configuration.api_version}/volume/v1/pgroup/pgroup1").
+        stub_request(:post, "#{Purest.configuration.url}/api/1.11/volume/v1/pgroup/pgroup1").
           with(
-            body: "{\"pgroup\":\"pgroup1\",\"name\":\"v1\"}",
             headers: {
        	    'Accept'=>'*/*',
        	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
@@ -182,7 +181,7 @@ describe Purest::Volume do
             }).
           to_return(status: 200, body: json, headers: {})
 
-          pgroup = Purest::Volume.create(:pgroup => 'pgroup1', :name => 'v1')
+          pgroup = Purest::Volume.create(:protection_group => 'pgroup1', :name => 'v1')
           expect(pgroup).to be_a(Hash)
       end
     end
@@ -266,7 +265,7 @@ describe Purest::Volume do
                 }).
               to_return(status: 200, body: json, headers: {})
 
-            deleted_pgroup = Purest::Volume.delete(:name => 'v1', :pgroup => 'pgroup1')
+            deleted_pgroup = Purest::Volume.delete(:name => 'v1', :protection_group => 'pgroup1')
             expect(deleted_pgroup).to be_a(Hash)
           end
         end

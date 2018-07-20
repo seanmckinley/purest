@@ -71,17 +71,33 @@ describe Purest::HostGroup do
         expect(host_group).to be_an(Array)
       end
     end
-    context 'when connecting a volume to a host group' do
+    context 'when connecting a volume to a host group, and specifying a LUN' do
       it 'should post to the correct url' do
         stub_request(:post, "https://purehost.com/api/1.11/hgroup/hgroup123/volume/volume123").
           with(
+            body: "{\"lun\":13}",
             headers: {
        	    'Accept'=>'*/*',
        	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
        	    'User-Agent'=>'Faraday v0.15.2'
             }).
             to_return(status: 200, body: JSON.generate([]), headers: {})
-        host_group = Purest::HostGroup.create(:name => 'hgroup123', :volume => 'volume123')
+        host_group = Purest::HostGroup.create(:name => 'hgroup123', :volume => 'volume123', :lun => 13)
+        expect(host_group).to be_an(Array)
+      end
+    end
+    context 'when connecting a host group to a protection group' do
+      it 'should post to the correct url' do
+        stub_request(:post, "https://purehost.com/api/1.11/hgroup/hgroup123/pgroup/pgroup123").
+          with(
+            body: "{}",
+            headers: {
+       	    'Accept'=>'*/*',
+       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	    'User-Agent'=>'Faraday v0.15.2'
+            }).
+            to_return(status: 200, body: JSON.generate([]), headers: {})
+        host_group = Purest::HostGroup.create(:name => 'hgroup123', :protection_group => 'pgroup123')
         expect(host_group).to be_an(Array)
       end
     end

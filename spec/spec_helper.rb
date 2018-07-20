@@ -8,7 +8,13 @@ require 'purest'
 require 'webmock/rspec'
 require 'fakes-rspec'
 
-API_VERSIONS = ENV['API_VERSION'] ? ENV['API_VERSION'].split : ['1.11']
+if ENV['API_VERSION']
+ API_VERSIONS = ENV['API_VERSION'].include?(',') ? ENV['API_VERSION'].split(',') : ENV['API_VERSION'].split
+elsif ENV['ALL_VERSIONS'] == true
+  API_VERSIONS = ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '1.10', '1.11']
+else
+  API_VERSIONS = ['1.11']
+end
 
 INTEGRATION = Psych.load_file(File.join(__dir__,'..','.integration.yaml'))
 

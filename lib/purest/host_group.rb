@@ -15,19 +15,15 @@ module Purest
     end
 
     def create(options = nil)
-      @options = options
-      create_session unless authenticated?
-
-      raw_resp = @conn.post do |req|
-        url = ["/api/#{Purest.configuration.api_version}/hgroup/#{@options[:name]}"]
-        url.map!{|u| u + "/pgroup/#{@options[:protection_group]}"} if @options[:protection_group]
-        url.map!{|u| u + "/volume/#{@options[:volume]}"} if @options[:volume]
-
-        req.body = @options.to_json
-        req.url concat_url url
+      # The API doesn't accept some of these options in the HTTP body
+      # during a POST, so we remove them from the options hash after
+      # creating a path to append to the base URL in APIMethods.create
+      if options[:name] && options[:volume]
+        appended_path = "#{options.delete(:name)}/volume/#{options.delete(:volume)}"
+      elsif options[:name] && options[:protection_group]
+        appended_path = "#{options.delete(:name)}/pgroup/#{options.delete(:protection_group)}"
       end
-
-      JSON.parse(raw_resp.body, :symbolize_names => true)
+      super(options, 'hgroup', appended_path)
     end
 
     # Update a host group, PUT

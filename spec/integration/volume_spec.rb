@@ -28,18 +28,32 @@ describe Purest::Volume, :integration => true do
       Purest.configuration.username = INTEGRATION['username']
       Purest.configuration.password = INTEGRATION['password']
     end
-    context 'when creating a host' do
+    context 'when creating a volume' do
       API_VERSIONS.each do |version|
         it "actually creates a host on api version #{version}" do
           Purest.configuration.api_version = version
           volume = Purest::Volume.create(:name => 'integration-tester', :size => '10G')
           fetched_volume = Purest::Volume.get(:name => volume[:name])
 
+
           expect(fetched_volume[:name]).to eq(volume[:name])
           expect(fetched_volume[:size]).to eq(volume[:size])
 
           # All of this has happened before, and all of this will happen again
           Purest::Volume.delete(:name => 'integration-tester', :eradicate => true)
+        end
+      end
+    end
+    context 'when attaching a volume to a protection group' do
+      API_VERSIONS.each do |version|
+        xit "actually creates a host on api version #{version}" do
+          Purest.configuration.api_version = version
+          protection_group = Purest::ProtectionGroup.create(:name => 'integration-test-pgroup')
+          create_volume = Purest::Volume.create(:name => 'integration-tester', :size => '10G')
+          attach_volume_to_pgroup = Purest::Volume.create(:name => 'integration-tester', :protection_group => 'integration-tester-pgroup')
+
+          binding.pry
+          expect
         end
       end
     end

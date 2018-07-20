@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe Purest::ProtectionGroup do
 
-  it { expect(described_class).to be < Purest::Rest}
+  it { expect(described_class).to be < Purest::APIMethods}
 
   describe '#get' do
     before do
@@ -26,7 +26,7 @@ describe Purest::ProtectionGroup do
       end
     end
     context 'when getting protection groups pending deletion' do
-      it 'should get back a list of hosts on an array' do
+      it 'should get to the correct url with the correct params' do
         stub_request(:get, "https://purehost.com/api/1.11/pgroup?pending=true").
           with(
             headers: {
@@ -37,6 +37,40 @@ describe Purest::ProtectionGroup do
             to_return(status: 200, body: JSON.generate([]), headers: {})
 
         protection_groups = Purest::ProtectionGroup.get(:pending => true)
+        expect(protection_groups).to be_an(Array)
+      end
+      it 'should get to the correct url with the correct params' do
+        stub_request(:get, "https://purehost.com/api/1.11/pgroup/pg1?pending=true").
+          with(
+            headers: {
+       	    'Accept'=>'*/*',
+       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	    'User-Agent'=>'Faraday v0.15.2'
+            }).
+            to_return(status: 200, body: JSON.generate([]), headers: {})
+
+        protection_groups = Purest::ProtectionGroup.get(:name => 'pg1', :pending => true)
+        expect(protection_groups).to be_an(Array)
+      end
+    end
+  end
+  describe '#post' do
+    before do
+      allow_any_instance_of(Purest::ProtectionGroup).to receive(:authenticated?).and_return(true)
+    end
+    context 'creating a snapshot of one or more protection groups' do
+      it 'should post to the correct url, with some options' do
+        stub_request(:post, "https://purehost.com/api/1.11/pgroup").
+          with(
+            body: "{\"snap\":true,\"source\":[\"pg1\"]}",
+            headers: {
+       	    'Accept'=>'*/*',
+       	    'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	    'User-Agent'=>'Faraday v0.15.2'
+            }).
+            to_return(status: 200, body: JSON.generate([]), headers: {})
+
+        protection_groups = Purest::ProtectionGroup.create(:snap => true, :source => ['pg1'])
         expect(protection_groups).to be_an(Array)
       end
     end

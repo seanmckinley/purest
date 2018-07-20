@@ -277,9 +277,19 @@ password: 'api-password'
 url: 'https://yoursuperawesomepurehost.com'
 ```
 
-Execute integration tests:
+There are a few ways you can execute the integration tests:
 ```
+# This will execute against the latest API version the gem is aware of, right now that is 1.11
 rspec -t integration
+
+# This will execute against a specific version
+API_VERSION=1.10 rspec -t integration
+
+# This will execute against all specified versions
+API_VERSION=1.1,1.2,1.5 rspec -t integration
+
+# And finally, if you wish to execute integration tests against every version
+ALL_VERSIONS=true rspec -t integration
 ```
 
 By default, this will run against version 1.1 to 1.11 of the API. This is useful for ensuring functionality added/subtracted to this project is programmatically tested against all versions of the API. I mostly did this as an exercise, that being said I think it provides a lot of usefulness and if it can be improved let me know (or submit a PR).

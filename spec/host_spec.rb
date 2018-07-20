@@ -92,6 +92,7 @@ describe Purest::Host do
         it 'posts to the correct url' do
           stub_request(:post, "https://purehost.com/api/1.11/host/new_host").
           with(
+            body: "{\"name\":\"new_host\"}",
             headers: {
      	      'Accept'=>'*/*',
      	      'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',

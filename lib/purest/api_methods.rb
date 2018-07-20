@@ -45,6 +45,33 @@ module Purest
 
       JSON.parse(raw_resp.body, :symbolize_names => true)
     end
-  end
 
+    # Create a resource, POST
+    # @param options [Hash] options to pass in
+    # @param path [String] the endpoint to send to
+    # @param appended_path [String] additional paths for some endpoints
+    def create(options = nil, path = nil, appended_path = nil)
+      @options = options
+      create_session unless authenticated?
+
+      raw_resp = @conn.post do |req|
+        # Base URL + path
+        url = ["/api/#{Purest.configuration.api_version}/#{path}"]
+
+        # Base URL + path + name, if supplied
+        url.map!{|u| u + "/#{@options[:name]}"} if @options[:name]
+
+        # Base URL + path + appended_path, if supplied
+        url.map!{|u| u + "/#{appended_path}"} if appended_path
+
+        # Turn whatever options we have into JSON
+        req.body = @options.to_json
+
+        # Set the request URL, and finally make the request
+        req.url concat_url url
+      end
+
+      JSON.parse(raw_resp.body, :symbolize_names => true)
+    end
+  end
 end

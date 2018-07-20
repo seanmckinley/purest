@@ -14,21 +14,11 @@ module Purest
       super(options, 'volume', GET_PARAMS, [:show_diff, :show_hgroup, :show_host])
     end
 
-    # Create a volume, POST
-    # @param options [Hash] options to pass
     def create(options = nil)
-      @options = options
-
-      raw_resp = @conn.post do |req|
-        url = "/api/#{Purest.configuration.api_version}/volume"
-        url += "/#{@options[:name]}" if @options[:name]
-        url += "/pgroup/#{@options[:pgroup]}" if @options[:pgroup]
-        req.body = @options.to_json
-
-        req.url url
+      if options[:name] && options[:protection_group]
+        appended_path = "#{options.delete(:name)}/pgroup/#{options.delete(:protection_group)}"
       end
-
-      JSON.parse(raw_resp.body, :symbolize_names => true)
+      super(options, 'volume', appended_path)
     end
 
     # Update a volume, PUT

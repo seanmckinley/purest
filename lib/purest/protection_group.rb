@@ -9,5 +9,9 @@ module Purest
     def get(options = nil)
       super(options, 'pgroup', GET_PARAMS)
     end
+
+    def create(options = nil)
+      super(options, 'pgroup')
+    end
   end
 end
