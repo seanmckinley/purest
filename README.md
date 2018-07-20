@@ -297,6 +297,16 @@ Purest::ProtectionGroup.delete(:name => 'pgroup1')
 Purest::ProtectionGroup.delete(:name => 'pgroup1', :eradicate => true)
 ```
 
+# Port
+Getting information about ports, 'cause that's all you get to do
+```ruby
+# Get port information
+Purest::Port.get
+
+# Get port information + initiator information = winning
+Purest::Port.get(:initiators => true)
+```
+
 # Specs
 This library is tested with rspec, to execute the specs merely run
 ```
@@ -330,4 +340,4 @@ ALL_VERSIONS=true rspec -t integration
 ```
 
 
-It is worth mentioning, this generates a fair bit of work for your Pure array so...you've been warned.
+It is worth mentioning, this generates a fair bit of work for your Pure array so...you've been warned. All of that being said, the integration testing is somewhat sparse at the moment
