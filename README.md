@@ -34,7 +34,9 @@ end
 ```
 
 ## API options
-The various class methods of this gem turn the provided options into HTTP parameters, and are
+First: Authentication and session management is handled behind the scenes, you just need to supply your username/password in the configuration block (as shown in the example above). That's it.
+
+Second: The various class methods of this gem turn the provided options into HTTP parameters, and are
 named accordingly. For instance, ```Purest::Volume.get({:snap => true})``` translates
 to http://purehost.yourdomain.com/api/1.11/volume?snap=true. For a full list
 of options for a given class, Pure provides good documentation at:
@@ -44,79 +46,9 @@ Below I'll provide a large group of examples, but I won't be detailing every sin
 
 # Examples
 
-## Volumes
-Getting volumes:
+## App
 ```ruby
-# Get the full list of volumes
-Purest::Volume.get
-
-# Get a single volume
-Purest::Volume.get(:name => 'volume1')
-
-# Get monitoring information about a volume
-Purest::Volume.get(:name => 'volume1', :action => 'monitor')
-
-# Get multiple volumes
-Purest::Volume.get(:names => ['volume1', 'volume2'])
-
-# Get a list of snapshots
-Purest::Volume.get(:snap => true)
-
-# Get a single snapshot
-Purest::Volume.get(:name => 'volume1', :snap => true)
-
-# Get multiple snapshots
-Purest::Volume.get(:names => ['volume1', 'volume2'], :snap => true)
-
-# List block differences for the specified snapshot
-Purest::Volume.get(:name => 'volume1.snap', :show_diff => true, :block_size => 512, :length => '2G')
-
-# List shared connections for a specified volume
-Purest::Volume.get(:name => 'volume1', :show_hgroup => true)
-
-# List private connections for a specified volume
-Purest::Volume.get(:name => 'volume1', :show_host => true)
-```
-
-Creating volumes:
-
-```ruby
-# Creating a new volume
-Purest::Volume.create(:name => 'volume', :size => '10G')
-
-# Creating a new volume by copying another
-Purest::Volume.create(:name => 'volume, ':source => 'other_vol')
-
-# Overwriting a volume by copying another
-Purest::Volume.create(:name => 'volume', :source => 'other_vol', :overwrite => true)
-
-# Add a volume to a protection group
-Purest::Volume.create(:name => 'volume', :protection_group => 'protection-group')
-```
-
-Updating volumes
-```ruby
-# Growing a volume
-Purest::Volume.update(:name => 'volume', :size => "15G")
-
-# Truncate (shrink) a volume
-Purest::Volume.update(:name => 'volume', :size => "10G", :truncate => true)
-
-# Rename a volume
-Purest::Volume.update(:name => 'volume', :new_name => 'volume_renamed')
-```
-
-Deleting volumes
-
-```ruby
-# Delete a volume
-Purest::Volume.delete(:name => 'volume_to_delete')
-
-# Eradicating a volume
-Purest::Volume.delete(:name => 'volume_to_delete', :eradicate => true)
-
-# Deleting a volume from a protection group
-Purest::Volume.delete(:name => 'volume', :protection_group => 'pgroup1')
+Purest::App.get(:initiators => true)
 ```
 
 ## Hosts
@@ -261,6 +193,16 @@ Disconnect the current array from a specified array:
 Purest::PhysicalArray.delete(:name => 'purehost2.yourdomain.com')
 ```
 
+## Port
+Getting information about ports, 'cause that's all you get to do
+```ruby
+# Get port information
+Purest::Port.get
+
+# Get port information + initiator information = winning
+Purest::Port.get(:initiators => true)
+```
+
 ## Protection Groups
 Getting information about protection groups
 ```ruby
@@ -298,14 +240,116 @@ Purest::ProtectionGroup.delete(:name => 'pgroup1')
 Purest::ProtectionGroup.delete(:name => 'pgroup1', :eradicate => true)
 ```
 
-## Port
-Getting information about ports, 'cause that's all you get to do
+## SNMP
+Getting SNMP information
 ```ruby
-# Get port information
-Purest::Port.get
+# Get a list of SNMP managers
+Purest::SNMP.get
 
-# Get port information + initiator information = winning
-Purest::Port.get(:initiators => true)
+# List SNMP v3 engine ID
+Purest::SNMP.get(:engine_id => true)
+```
+
+Creating an SNMP manager
+```ruby
+# Create an SNMP manager
+Purest::SNMP.create(:name => 'snmp-manager1', :host => 'snmp.yourdomain.com')
+
+# Create an SNMP manager pointed at an IPv4 address with a custom port
+Purest::SNMP.create(:name => 'snmp-manager1', :host => '111.11.11.111:222')
+
+# For those brave few; the strong souls using IPv6 with a custom port
+Purest::SNMP.create(:name => 'snmp-manager1', :host => '[2001:db8:0:1]:222')
+```
+
+Updating an existing SNMP manager
+```ruby
+# Renaming an SNMP manager
+Purest::SNMP.update(:name => 'snmp-manager1', :new_name => 'snmp-manager-renamed')
+
+# For those not so brave; the weak souls who give up using IPv6 with a custom port
+Purest::SNMP.update(:name => 'snmp-manager1', :host => '111.11.11.111:222')
+```
+
+Deleting an SNMP manager
+```ruby
+# Delete an SNMP manager
+Purest::SNMP.delete(:name => 'snmp-manager1')
+```
+
+## Volumes
+Getting volumes:
+```ruby
+# Get the full list of volumes
+Purest::Volume.get
+
+# Get a single volume
+Purest::Volume.get(:name => 'volume1')
+
+# Get monitoring information about a volume
+Purest::Volume.get(:name => 'volume1', :action => 'monitor')
+
+# Get multiple volumes
+Purest::Volume.get(:names => ['volume1', 'volume2'])
+
+# Get a list of snapshots
+Purest::Volume.get(:snap => true)
+
+# Get a single snapshot
+Purest::Volume.get(:name => 'volume1', :snap => true)
+
+# Get multiple snapshots
+Purest::Volume.get(:names => ['volume1', 'volume2'], :snap => true)
+
+# List block differences for the specified snapshot
+Purest::Volume.get(:name => 'volume1.snap', :show_diff => true, :block_size => 512, :length => '2G')
+
+# List shared connections for a specified volume
+Purest::Volume.get(:name => 'volume1', :show_hgroup => true)
+
+# List private connections for a specified volume
+Purest::Volume.get(:name => 'volume1', :show_host => true)
+```
+
+Creating volumes:
+
+```ruby
+# Creating a new volume
+Purest::Volume.create(:name => 'volume', :size => '10G')
+
+# Creating a new volume by copying another
+Purest::Volume.create(:name => 'volume, ':source => 'other_vol')
+
+# Overwriting a volume by copying another
+Purest::Volume.create(:name => 'volume', :source => 'other_vol', :overwrite => true)
+
+# Add a volume to a protection group
+Purest::Volume.create(:name => 'volume', :protection_group => 'protection-group')
+```
+
+Updating volumes
+```ruby
+# Growing a volume
+Purest::Volume.update(:name => 'volume', :size => "15G")
+
+# Truncate (shrink) a volume
+Purest::Volume.update(:name => 'volume', :size => "10G", :truncate => true)
+
+# Rename a volume
+Purest::Volume.update(:name => 'volume', :new_name => 'volume_renamed')
+```
+
+Deleting volumes
+
+```ruby
+# Delete a volume
+Purest::Volume.delete(:name => 'volume_to_delete')
+
+# Eradicating a volume
+Purest::Volume.delete(:name => 'volume_to_delete', :eradicate => true)
+
+# Deleting a volume from a protection group
+Purest::Volume.delete(:name => 'volume', :protection_group => 'pgroup1')
 ```
 
 # Specs
