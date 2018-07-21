@@ -48,7 +48,42 @@ Below I'll provide a large group of examples, but I won't be detailing every sin
 
 ## App
 ```ruby
+# Teeny tiny class, can get apps or get apps and initiators
+Purest::App.get
 Purest::App.get(:initiators => true)
+```
+
+## Cert
+List certificate attributes or export a certificate
+```ruby
+# Get certificate attributes
+Purest::Cert.get
+
+# Export current certificate
+Purest::Cert.get(:certificate => true)
+
+# Export current intermediate certificate
+Purest::Cert.get(:intermediate_certificate => true)
+
+# Get a CSR with current certificate attributes
+Purest::Cert.get(:csr => true)
+
+# Get a CSR with current certificate attributes, but change the CN
+Purest::Cert.get(:csr => true, :common_name => 'host.example.com')
+```
+
+Create self signed certificate, or import one. If you're wondering why this
+is an update action and not a create action, I believe it comes down to the fact
+that the Pure Array already has a self signed cert so we're just updating in place.
+```ruby
+# Create a self signed certificate, using existing attributes
+Purest::Cert.update(:self_signed => true)
+
+# Create a self signed cert, using all existing attributes except the state
+Purest::Cert.update(:self_signed => true, :state => 'FL')
+
+# Import a cert signed by a CA
+Purest::Cert.update(:certificate => 'your_huge_certificate_string')
 ```
 
 ## Hosts
