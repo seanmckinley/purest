@@ -86,6 +86,17 @@ Purest::Cert.update(:self_signed => true, :state => 'FL')
 Purest::Cert.update(:certificate => 'your_huge_certificate_string')
 ```
 
+## DNS
+Listing DNS attributes
+```ruby
+Purest::DNS.get
+```
+
+Updating DNS attributes
+```ruby
+Purest::DNS.update(:nameservers => ['newdns1', 'newdns2'])
+```
+
 ## Hosts
 Getting hosts:
 ```ruby
@@ -199,6 +210,33 @@ Purest::HostGroup.delete(:name => 'hgroup1', :protection_group => 'pgroup1')
 Purest::HostGroup.delete(:name => 'hgroup1', :volume => 'volume1')
 ```
 
+## Network
+List network interfaces
+```ruby
+# Get network interfaces and their statuses
+Purest::Network.get
+
+# Get attributes about a specific network component
+Purest::Network.get(:name => 'ct0.eth0')
+```
+
+Create a VLAN interface
+```ruby
+# Create a vlan with a specified subnet
+Purest::Network.create(:subnet => 'subnet10')
+```
+
+Perform network interface actions or update attributes
+```ruby
+# Set MTU
+Purest::Network.update(:mtu => 2000)
+```
+
+Delete a VLAN interface
+```ruby
+Purest::Network.delete(:name => 'ct0.eth0')
+```
+
 ## Physical Arrays
 
 List the attributes on an array:
@@ -310,6 +348,31 @@ Deleting an SNMP manager
 ```ruby
 # Delete an SNMP manager
 Purest::SNMP.delete(:name => 'snmp-manager1')
+```
+
+## Subnet
+Getting information about subnets
+```ruby
+Purest::Subnet.get
+
+# Specify a subnet
+Purest::Subnet.get(:name => 'subnet10')
+```
+
+Creating a subnet
+```ruby
+Purest::Subnet.create(:name => 'subnet20', :gateway => '11.11.11.1')
+```
+
+Updating a subnet
+```ruby
+# Rename a subnet
+Purest::Subnet.update(:name => 'subnet20', :new_name => 'subnet21')
+```
+
+Deleting a subnet
+```ruby
+Purest::Subnet.delete(:name => 'subnet21')
 ```
 
 ## Volumes
