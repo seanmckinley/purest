@@ -104,8 +104,9 @@ module Purest
       @options = options
 
       raw_resp = @conn.delete do |req|
-        url = "/api/#{Purest.configuration.api_version}/#{path}/#{@options[:name]}"
-        url += "#{appended_path}" if appended_path
+        url = "/api/#{Purest.configuration.api_version}/#{path}"
+        url += "/#{@options[:name]}" if @options[:name]
+        url += "/#{appended_path}" if appended_path
 
         req.url url
       end
