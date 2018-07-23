@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Purest
-  class Alert < Purest::APIMethods
+  class Alerts < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
     GET_PARAMS = [].freeze

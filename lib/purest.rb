@@ -31,7 +31,7 @@ module Purest
   self.root_path = File.expand_path __dir__
   self.lib_path = File.expand_path 'purest', __dir__
 
-  require_libs  'rest', 'api_methods', 'configuration', 'alert', 'app', 'cert',
+  require_libs  'rest', 'api_methods', 'configuration', 'alerts', 'app', 'cert',
                 'directory_service', 'dns', 'drive', 'hardware', 'host',
                 'host_group', 'message', 'network', 'physical_array', 'port',
                 'protection_group', 'snmp', 'subnet', 'users', 'volume'

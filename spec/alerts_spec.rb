@@ -2,11 +2,11 @@
 
 require 'spec_helper'
 
-describe Purest::Alert do
+describe Purest::Alerts do
   it { expect(described_class).to be < Purest::Rest }
 
   before do
-    allow_any_instance_of(Purest::Alert).to receive(:authenticated?).and_return(true)
+    allow_any_instance_of(Purest::Alerts).to receive(:authenticated?).and_return(true)
   end
   describe '#get' do
     context 'when getting email recipients that receive alerts' do
@@ -20,7 +20,7 @@ describe Purest::Alert do
             }
           )
           .to_return(status: 200, body: JSON.generate([]), headers: {})
-        alerts = Purest::Alert.get
+        alerts = Purest::Alerts.get
       end
     end
     context 'when getting information about a specific email recipient' do
@@ -34,7 +34,7 @@ describe Purest::Alert do
             }
           )
           .to_return(status: 200, body: JSON.generate([]), headers: {})
-        alerts = Purest::Alert.get(name: 'paxton.fettle@atc.com')
+        alerts = Purest::Alerts.get(name: 'paxton.fettle@atc.com')
       end
     end
   end
