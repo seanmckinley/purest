@@ -74,13 +74,19 @@ module Purest
       JSON.parse(raw_resp.body, :symbolize_names => true)
     end
 
-    def update(options = nil, path = nil)
+    def update(options = nil, path = nil, appended_path = nil)
       @options = options
       create_session unless authenticated?
 
       raw_resp = @conn.put do |req|
+        # Base URL + path
         url = "/api/#{Purest.configuration.api_version}/#{path}"
+
+        # Base URL + path + name, if supplied
         url += "/#{@options[:name]}" if @options[:name]
+
+        # Base URL + appended path
+        url += "/#{appended_path}" if appended_path
 
         # Since :name and :new_name are used the same throughout almost every class
         # it seems reasonable to do this here
