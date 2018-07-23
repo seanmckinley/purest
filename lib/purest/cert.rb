@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Purest
   class Cert < Purest::APIMethods
     @access_methods = %i[get update]
 
-    GET_PARAMS = [:certificate, :common_name, :country, :email,
-                  :intermediate_certificate, :locality, :organization,
-                  :organizational_unit, :state]
+    GET_PARAMS = %i[certificate common_name country email
+                    intermediate_certificate locality organization
+                    organizational_unit state].freeze
 
     def get(options = nil)
       if !options.nil? && options[:csr]

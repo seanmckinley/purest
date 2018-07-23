@@ -2,11 +2,10 @@
 
 module Purest
   class APIMethods < Purest::Rest
-
     def append_path(url, options)
       options.each do |path|
         new_path = path.to_s.gsub('show_', '')
-        url.map!{|u| u + "/#{new_path}"} if !@options.nil? && @options[path]
+        url.map! { |u| u + "/#{new_path}" } if !@options.nil? && @options[path]
       end
     end
 
@@ -20,7 +19,7 @@ module Purest
         # Name is pretty universal, since most endpoints allow you to query
         # specific items, e.g. /hosts/host1 or /volume/volume1
         # where host1 and volume1 are names
-        url.map!{|u| u + "/#{@options[:name]}"} if !@options.nil? && @options[:name]
+        url.map! { |u| u + "/#{@options[:name]}" } if !@options.nil? && @options[:name]
 
         # Here we append the various paths, based on available GET endpoints
         append_path(url, appended_paths) unless appended_paths.nil?
@@ -37,13 +36,13 @@ module Purest
         # Generate array, consisting of url parts, to be built
         # by concat_url method below
         params.each do |param|
-          url += self.send(:"use_#{param}",@options)
+          url += send(:"use_#{param}", @options)
         end
 
         req.url concat_url url
       end
 
-      JSON.parse(raw_resp.body, :symbolize_names => true)
+      JSON.parse(raw_resp.body, symbolize_names: true)
     end
 
     # Create a resource, POST
@@ -59,10 +58,10 @@ module Purest
         url = ["/api/#{Purest.configuration.api_version}/#{path}"]
 
         # Base URL + path + name, if supplied
-        url.map!{|u| u + "/#{@options[:name]}"} if @options[:name]
+        url.map! { |u| u + "/#{@options[:name]}" } if @options[:name]
 
         # Base URL + path + appended_path, if supplied
-        url.map!{|u| u + "/#{appended_path}"} if appended_path
+        url.map! { |u| u + "/#{appended_path}" } if appended_path
 
         # Turn whatever options we have into JSON
         req.body = @options.to_json
@@ -71,7 +70,7 @@ module Purest
         req.url concat_url url
       end
 
-      JSON.parse(raw_resp.body, :symbolize_names => true)
+      JSON.parse(raw_resp.body, symbolize_names: true)
     end
 
     def update(options = nil, path = nil, appended_path = nil)
@@ -97,7 +96,7 @@ module Purest
         req.url url
       end
 
-      JSON.parse(raw_resp.body, :symbolize_names => true)
+      JSON.parse(raw_resp.body, symbolize_names: true)
     end
 
     def delete(options = nil, path = nil, appended_path = nil)
@@ -120,7 +119,7 @@ module Purest
         end
       end
 
-      JSON.parse(raw_resp.body, :symbolize_names => true)
+      JSON.parse(raw_resp.body, symbolize_names: true)
     end
   end
 end

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Purest
   class Subnet < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
-    GET_PARAMS = []
+    GET_PARAMS = [].freeze
 
     def get(options = nil)
       super(options, 'subnet', GET_PARAMS)

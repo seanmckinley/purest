@@ -4,14 +4,14 @@ module Purest
   class Volume < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
-    GET_PARAMS = [:action, :block_size, :connect, :historical, :length, :names,
-                  :pending, :pending_only, :pgrouplist, :private, :protect,
-                  :shared, :snap, :space]
+    GET_PARAMS = %i[action block_size connect historical length names
+                    pending pending_only pgrouplist private protect
+                    shared snap space].freeze
 
     # Get a list of volumes, GET
     # @param options [Hash] options to pass
     def get(options = nil)
-      super(options, 'volume', GET_PARAMS, [:show_diff, :show_hgroup, :show_host])
+      super(options, 'volume', GET_PARAMS, %i[show_diff show_hgroup show_host])
     end
 
     def create(options = nil)

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Purest
   class SNMP < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
-    GET_PARAMS = [:engine_id]
+    GET_PARAMS = [:engine_id].freeze
 
     def get(options = nil)
       super(options, 'snmp', GET_PARAMS)

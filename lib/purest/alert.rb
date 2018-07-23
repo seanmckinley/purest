@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Purest
   class Alert < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
-    GET_PARAMS = []
+    GET_PARAMS = [].freeze
 
     def get(options = nil)
       super(options, 'alert', GET_PARAMS)

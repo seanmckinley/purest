@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Purest::Host, :integration => true do
+describe Purest::Host, integration: true do
   describe '#post' do
     before(:each) do
       WebMock.allow_net_connect!
@@ -14,11 +14,11 @@ describe Purest::Host, :integration => true do
       API_VERSIONS.each do |version|
         Purest.configuration.api_version = version
         it "actually creates a host on api version #{version}" do
-          host = Purest::Host.create(:name => 'integration-tester-host')
-          fetched_host = Purest::Host.get(:name => 'integration-tester-host')
+          host = Purest::Host.create(name: 'integration-tester-host')
+          fetched_host = Purest::Host.get(name: 'integration-tester-host')
 
           expect(fetched_host[:name]).to eq(host[:name])
-          Purest::Host.delete(:name => 'integration-tester-host')
+          Purest::Host.delete(name: 'integration-tester-host')
         end
       end
     end
@@ -34,12 +34,12 @@ describe Purest::Host, :integration => true do
       API_VERSIONS.each do |version|
         Purest.configuration.api_version = version
         it "actually renames a host on api version #{version}" do
-          host = Purest::Host.create(:name => 'integration-tester-host')
-          host_renamed = Purest::Host.update(:name => 'integration-tester-host', :new_name => 'integration-tester-host-renamed')
-          fetched_renamed_host = Purest::Host.get(:name => host_renamed[:name])
+          host = Purest::Host.create(name: 'integration-tester-host')
+          host_renamed = Purest::Host.update(name: 'integration-tester-host', new_name: 'integration-tester-host-renamed')
+          fetched_renamed_host = Purest::Host.get(name: host_renamed[:name])
 
           expect(fetched_renamed_host[:name]).to eq('integration-tester-host-renamed')
-          Purest::Host.delete(:name => 'integration-tester-host-renamed')
+          Purest::Host.delete(name: 'integration-tester-host-renamed')
         end
       end
     end

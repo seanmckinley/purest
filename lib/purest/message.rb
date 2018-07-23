@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Purest
   class Message < Purest::APIMethods
     @access_methods = %i[get update]
 
-    GET_PARAMS = [:audit, :flagged, :login, :open, :recent, :user]
+    GET_PARAMS = %i[audit flagged login open recent user].freeze
 
     def get(options = nil)
       super(options, 'message', GET_PARAMS)

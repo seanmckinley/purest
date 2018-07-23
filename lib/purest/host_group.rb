@@ -1,12 +1,12 @@
 # frozen_string_literal: true
-#
+
 module Purest
   class HostGroup < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
-    GET_PARAMS = [:action, :block_size, :connect, :historical, :length, :names,
-                  :pending, :pending_only, :pgrouplist, :private, :protect,
-                  :shared, :snap, :space]
+    GET_PARAMS = %i[action block_size connect historical length names
+                    pending pending_only pgrouplist private protect
+                    shared snap space].freeze
 
     # Get a list of hostgroups, GET
     # @param options [Hash] options to pass in
@@ -43,6 +43,7 @@ module Purest
     end
 
     private
+
     # Dynamic method generation, e.g. use_all, use_action, etc
     GET_PARAMS.each do |param|
       define_method :"use_#{param}" do |options|

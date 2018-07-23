@@ -4,8 +4,8 @@ module Purest
   class Host < Purest::APIMethods
     @access_methods = %i[get create update delete]
 
-    GET_PARAMS = [:action, :all, :chap, :connect, :names, :personality,
-                  :private, :protect, :shared, :space]
+    GET_PARAMS = %i[action all chap connect names personality
+                    private protect shared space].freeze
 
     # Get a list of hosts, GET
     # @param options [Hash] options to pass

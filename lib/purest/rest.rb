@@ -14,11 +14,7 @@ module Purest
     # Check if session exists, and whether or not it's expired
     def authenticated?
       if defined? @session_expire
-        if Time.now.utc < @session_expire
-          true
-        else
-          false
-        end
+        Time.now.utc < @session_expire
       else
         false
       end
@@ -76,6 +72,7 @@ module Purest
     end
 
     private
+
     def get_token
       raw_resp = @conn.post do |req|
         req.url "/api/#{Purest.configuration.api_version}/auth/apitoken"
