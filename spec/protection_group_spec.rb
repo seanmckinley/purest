@@ -3,13 +3,12 @@
 require 'spec_helper'
 
 describe Purest::ProtectionGroup do
-
   it { expect(described_class).to be < Purest::APIMethods}
 
+  before do
+    allow_any_instance_of(Purest::ProtectionGroup).to receive(:authenticated?).and_return(true)
+  end
   describe '#get' do
-    before do
-      allow_any_instance_of(Purest::ProtectionGroup).to receive(:authenticated?).and_return(true)
-    end
     context 'No options passed' do
       it 'should get back a list of protection groups' do
         stub_request(:get, "https://purehost.com/api/1.11/pgroup").
@@ -55,9 +54,6 @@ describe Purest::ProtectionGroup do
     end
   end
   describe '#post' do
-    before do
-      allow_any_instance_of(Purest::ProtectionGroup).to receive(:authenticated?).and_return(true)
-    end
     context 'creating a snapshot of one or more protection groups' do
       it 'should post to the correct url, with some options' do
         stub_request(:post, "https://purehost.com/api/1.11/pgroup").
@@ -76,9 +72,6 @@ describe Purest::ProtectionGroup do
     end
   end
   describe '#put' do
-    before do
-      allow_any_instance_of(Purest::ProtectionGroup).to receive(:authenticated?).and_return(true)
-    end
     context 'creating a snapshot of one or more protection groups' do
       it 'should post to the correct url, with some options' do
         stub_request(:put, "https://purehost.com/api/1.11/pgroup/pgroup1").
@@ -96,9 +89,6 @@ describe Purest::ProtectionGroup do
     end
   end
   describe '#delete' do
-    before do
-      allow_any_instance_of(Purest::ProtectionGroup).to receive(:authenticated?).and_return(true)
-    end
     context 'eradicating a protection group' do
       it 'should delete to the correct url, with the correct http body' do
         stub_request(:delete, "https://purehost.com/api/1.11/pgroup/pgroup1").

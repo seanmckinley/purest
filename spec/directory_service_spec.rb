@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 describe Purest::DirectoryService do
-  let(:faraday) { fake }
-
   it { expect(described_class).to be < Purest::Rest}
 
   before do

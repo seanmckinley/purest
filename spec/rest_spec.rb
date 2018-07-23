@@ -34,9 +34,9 @@ describe Purest::Rest do
     context 'when generating named params' do
       it 'turns an array into the correct param' do
         @obj = Purest::Rest.new
-        param = @obj.use_named_parameter(:names, ['vol1, vol2'])
+        param = @obj.use_named_parameter(:names, ['vol1', 'vol2'])
 
-        expect(param).to eq(["names=vol1, vol2"])
+        expect(param).to eq(["names=vol1,vol2"])
       end
     end
     context 'when NOT authenticated' do

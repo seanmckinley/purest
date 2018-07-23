@@ -3,15 +3,14 @@
 require 'spec_helper'
 
 describe Purest::HostGroup do
-
   it { expect(described_class).to be < Purest::Rest}
 
+  before do
+    allow_any_instance_of(Purest::HostGroup).to receive(:authenticated?).and_return(true)
+  end
   describe '#get' do
-    before do
-      allow_any_instance_of(Purest::HostGroup).to receive(:authenticated?).and_return(true)
-    end
     context 'No options passed' do
-      it 'should get back a list of hosts on an array' do
+      it 'should get back a list of host groups on an array' do
         stub_request(:get, "https://purehost.com/api/1.11/hgroup").
           with(
             headers: {
@@ -54,9 +53,6 @@ describe Purest::HostGroup do
     end
   end
   describe '#post' do
-    before do
-      allow_any_instance_of(Purest::HostGroup).to receive(:authenticated?).and_return(true)
-    end
     context 'when creating a host group' do
       it 'should post to the correct url' do
         stub_request(:post, "https://purehost.com/api/1.11/hgroup/hgroup123").
@@ -103,10 +99,7 @@ describe Purest::HostGroup do
     end
   end
   describe '#put' do
-    before do
-      allow_any_instance_of(Purest::HostGroup).to receive(:authenticated?).and_return(true)
-    end
-    context 'by renaming it' do
+    context 'when updating a host group by renaming it' do
       it 'should put to the correct url, with the correct params' do
         stub_request(:put, "https://purehost.com/api/1.11/hgroup/hgroup123").
           with(
@@ -123,9 +116,6 @@ describe Purest::HostGroup do
     end
   end
   describe '#delete' do
-    before do
-      allow_any_instance_of(Purest::HostGroup).to receive(:authenticated?).and_return(true)
-    end
     context 'when deleting a host group' do
       it 'should delete to the correct url' do
         stub_request(:delete, "https://purehost.com/api/1.11/hgroup/hgroup123").

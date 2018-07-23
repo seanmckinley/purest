@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 describe Purest::Network do
-  let(:faraday) { fake }
-
   it { expect(described_class).to be < Purest::Rest}
 
   before do
@@ -24,7 +22,7 @@ describe Purest::Network do
         networks = Purest::Network.get
       end
     end
-    context 'when getting a specific network' do
+    context 'when getting a specific network device' do
       it 'gets a list of array network attributes' do
         stub_request(:get, "#{Purest.configuration.url}/api/1.11/network/alpha.eth0").
           with(

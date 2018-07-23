@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 describe Purest::Drive do
-  let(:faraday) { fake }
-
   it { expect(described_class).to be < Purest::Rest}
 
   before do

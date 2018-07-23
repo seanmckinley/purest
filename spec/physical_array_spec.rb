@@ -3,14 +3,12 @@
 require 'spec_helper'
 
 describe Purest::PhysicalArray do
-  let(:faraday) { fake }
-
   it { expect(described_class).to be < Purest::Rest}
 
+  before do
+    allow_any_instance_of(Purest::PhysicalArray).to receive(:authenticated?).and_return(true)
+  end
   describe '#get' do
-    before do
-      allow_any_instance_of(Purest::PhysicalArray).to receive(:authenticated?).and_return(true)
-    end
     context 'No options passed' do
       it 'should get to the correct url' do
         stub_request(:get, "https://purehost.com/api/1.11/array").
@@ -55,9 +53,6 @@ describe Purest::PhysicalArray do
     end
   end
   describe '#post' do
-    before do
-      allow_any_instance_of(Purest::PhysicalArray).to receive(:authenticated?).and_return(true)
-    end
     context 'when creating a connection between purehost and purehost2' do
       it 'posts to the correct url' do
         stub_request(:post, "https://purehost.com/api/1.11/array/connection").
@@ -74,9 +69,6 @@ describe Purest::PhysicalArray do
     end
   end
   describe '#put' do
-    before do
-      allow_any_instance_of(Purest::PhysicalArray).to receive(:authenticated?).and_return(true)
-    end
     context 'when updating an arrays attributes' do
       it 'should put to the correct url' do
         stub_request(:put, "https://purehost.com/api/1.11/array").
@@ -155,9 +147,6 @@ describe Purest::PhysicalArray do
     end
   end
   describe '#delete' do
-    before do
-      allow_any_instance_of(Purest::PhysicalArray).to receive(:authenticated?).and_return(true)
-    end
     context 'when disconnecting the current array from a specified array' do
       it 'should delete to the correct url' do
         stub_request(:delete, "https://purehost.com/api/1.11/array/connection/purehost02").

@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 describe Purest::SNMP do
-  let(:faraday) { fake }
-
   it { expect(described_class).to be < Purest::Rest}
 
   before do
@@ -25,7 +23,7 @@ describe Purest::SNMP do
       end
     end
     context 'when getting a specified snmp manager' do
-      it 'gets a list of designated SNMP managers' do
+      it 'gets a specified SNMP manager' do
         stub_request(:get, "#{Purest.configuration.url}/api/1.11/snmp/localhost").
           with(
             headers: {
@@ -54,7 +52,7 @@ describe Purest::SNMP do
       end
     end
     context 'when creating an snmp manager object using an IPV4 address and specifying a port' do
-      it 'posts to the correct url with at least a host value passed' do
+      it 'posts to the correct url with an ipv4 host attribute' do
         stub_request(:post, "#{Purest.configuration.url}/api/1.11/snmp/snmp-manager1").
           with(
             body: "{\"name\":\"snmp-manager1\",\"host\":\"111.11.11.111:222\"}",
@@ -68,7 +66,7 @@ describe Purest::SNMP do
       end
     end
     context 'when creating an snmp manager object using an IPV6 address' do
-      it 'posts to the correct url with at least a host value passed' do
+      it 'posts to the correct url with an ipv6 host attribute' do
         stub_request(:post, "#{Purest.configuration.url}/api/1.11/snmp/snmp-manager1").
           with(
             body: "{\"name\":\"snmp-manager1\",\"host\":\"[FE80::0202:B3FF:FE1E:8329]:222\"}",

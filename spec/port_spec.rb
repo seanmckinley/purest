@@ -3,15 +3,13 @@
 require 'spec_helper'
 
 describe Purest::Port do
-  let(:faraday) { fake }
-
   it { expect(described_class).to be < Purest::Rest}
 
   before do
     allow_any_instance_of(Purest::Port).to receive(:authenticated?).and_return(true)
   end
   describe '#get' do
-    context 'WITH EVERYTHING, EVER' do
+    context 'when getting a list of ports with initiators set to true' do
       it 'gets a list of array ports' do
         stub_request(:get, "#{Purest.configuration.url}/api/1.11/port?initiators=true").
           with(

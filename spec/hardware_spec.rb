@@ -3,7 +3,6 @@
 require 'spec_helper'
 
 describe Purest::Hardware do
-
   it { expect(described_class).to be < Purest::Rest}
 
   before do

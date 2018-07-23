@@ -82,9 +82,6 @@ describe Purest::Host do
   end
 
   describe '#put' do
-    before do
-      allow_any_instance_of(Purest::Host).to receive(:authenticated?).and_return(true)
-    end
     context 'when renaming a host' do
       it 'should put to the correct url, with the correct params' do
         stub_request(:put, "https://purehost.com/api/1.11/host/host123").
@@ -148,9 +145,6 @@ describe Purest::Host do
   end
 
   describe '#post' do
-    before do
-      allow_any_instance_of(Purest::Host).to receive(:authenticated?).and_return(true)
-    end
     context 'when creating a host' do
       context 'with no params' do
         it 'posts to the correct url' do
