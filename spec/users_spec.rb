@@ -75,7 +75,7 @@ describe Purest::Users do
       it 'puts to the correct URL' do
         stub_request(:put, "#{Purest.configuration.url}/api/1.11/admin")
           .with(
-            body: "{\"clear\":true}",
+            body: '{"clear":true}',
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
