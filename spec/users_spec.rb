@@ -71,6 +71,21 @@ describe Purest::Users do
     end
   end
   describe '#put' do
+    context 'when clearing the user permission cache enteries' do
+      it 'puts to the correct URL' do
+        stub_request(:put, "#{Purest.configuration.url}/api/1.11/admin")
+          .with(
+            body: "{\"clear\":true}",
+            headers: {
+              'Accept' => '*/*',
+              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'User-Agent' => 'Faraday v0.15.2'
+            }
+          )
+          .to_return(status: 200, body: JSON.generate([]), headers: {})
+        cleared_cache = Purest::Users.update(clear: true)
+      end
+    end
     context 'when updating the public key for a specified user' do
       it 'should put to the correct url with the correct HTTP body' do
         stub_request(:put, "#{Purest.configuration.url}/api/1.11/admin/user1")

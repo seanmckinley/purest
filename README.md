@@ -47,12 +47,32 @@ Below I'll provide a large group of examples, but I won't be detailing every sin
 # Examples
 
 ## Alerts
+Get information about alerts/alerting
 ```ruby
 # List email recipients
 Purest::Alerts.get
 
 # List information about a specific email recipient
 Purest::Alerts.get(name: 'email@example.com')
+```
+
+Designate an email address to receive alerts
+```ruby
+Purest::Alerts.create(name: 'new-user@example.com')
+```
+
+Updating/performing alert actions
+```ruby
+# Send a test alert
+Purest::Alerts.update(action: 'test')
+
+# Turn off alert sending for new-user@example.com
+Purest::Alerts.update(name: 'new-user@example.com', enabled: false)
+```
+
+Deleting an email address from list of addresses that receive alerts
+```ruby
+Purest::Alerts.delete(name: 'new-user@example.com')
 ```
 
 ## App
@@ -83,7 +103,7 @@ Purest::Cert.get(csr: true, common_name: 'host.example.com')
 
 Create self signed certificate, or import one. If you're wondering why this
 is an update action and not a create action, I believe it comes down to the fact
-that the Pure Array already has a self signed cert so we're just updating in place.
+that the Pure Array already has a self signed cert from the get go so we're just updating in place.
 ```ruby
 # Create a self signed certificate, using existing attributes
 Purest::Cert.update(self_signed: true)
@@ -95,6 +115,17 @@ Purest::Cert.update(self_signed: true, state: 'FL')
 Purest::Cert.update(certificate: 'your_huge_certificate_string')
 ```
 
+## Directory Service
+Get information about directory service
+```ruby
+Purest::DirectoryService.get
+```
+
+Update information about a directory service
+```ruby
+Purest::DirectoryService.update(bind_password: 'superpassword')
+```
+
 ## DNS
 Listing DNS attributes
 ```ruby
@@ -104,6 +135,32 @@ Purest::DNS.get
 Updating DNS attributes
 ```ruby
 Purest::DNS.update(nameservers: ['newdns1', 'newdns2'])
+```
+
+## Drive information
+List flash modules, NVRAM modules, and their attributes
+```ruby
+Purest::Drive.get
+
+Purest::Drive.get(name: 'SH0.BAY0')
+```
+
+## Hardware
+List hardware components
+```ruby
+Purest::Hardware.get
+
+# List a specific hardware component's attributes
+Purest::Hardware.get(name: 'SH0.BAY0')
+```
+
+Control visual identification of specified components
+```ruby
+# Turn the lights on
+Purest::Hardware.update(name: 'SH0.BAY0', identify: on)
+
+# Turn the lights off :(
+Purest::Hardware.update(name: 'SH0.BAY0', identify: off)
 ```
 
 ## Hosts
@@ -217,6 +274,17 @@ Purest::HostGroup.delete(name: 'hgroup1', protection_group: 'pgroup1')
 
 # Break the connection between a host group and a volume
 Purest::HostGroup.delete(name: 'hgroup1', volume: 'volume1')
+```
+
+## Messages
+List alert events, audit records, etc
+```ruby
+Purest::Messages.get
+```
+
+Flag/unflag a message
+```ruby
+Purest::Messages.update(id: 2, flagged: true)
 ```
 
 ## Network
@@ -382,6 +450,37 @@ Purest::Subnet.update(name: 'subnet20', new_name: 'subnet21')
 Deleting a subnet
 ```ruby
 Purest::Subnet.delete(name: 'subnet21')
+```
+
+## Users
+Getting information about users
+```ruby
+Purest::Users.get
+
+# Specific user information
+Purest::Users.get(name: 'paxton.fettle')
+
+# List the API token of a given user
+Purest::Users.get(name: 'paxton.fettle', api_token: true)
+```
+
+Create an API token for an existing user
+```ruby
+Purest::Users.create(name: 'paxton.fettle')
+```
+
+Updating user related stuff
+```ruby
+# Clear all user permission cache entries
+Purest::Users.update(clear: true)
+
+# Update a specific user's public key
+Purest::Users.update(name: 'paxton.fettle', publickey: 'hugepublickeystring')
+```
+
+Delete API token for a user
+```ruby
+Purest::Users.delete(name: 'paxton.fettle')
 ```
 
 ## Volumes
