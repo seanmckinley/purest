@@ -32,9 +32,9 @@ module Purest
   self.lib_path = File.expand_path 'purest', __dir__
 
   require_libs  'rest', 'api_methods', 'configuration', 'alert', 'app', 'cert',
-                'dns', 'host', 'host_group', 'message', 'network',
-                'physical_array', 'port', 'protection_group', 'snmp', 'subnet',
-                'volume'
+                'dns', 'drive', 'hardware', 'host', 'host_group', 'message',
+                'network', 'physical_array', 'port', 'protection_group', 'snmp',
+                'subnet', 'volume'
 
   self.configuration ||= Purest::Configuration.new
 
