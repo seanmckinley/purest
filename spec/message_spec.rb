@@ -2,11 +2,11 @@
 
 require 'spec_helper'
 
-describe Purest::Message do
+describe Purest::Messages do
   it { expect(described_class).to be < Purest::Rest }
 
   before do
-    allow_any_instance_of(Purest::Message).to receive(:authenticated?).and_return(true)
+    allow_any_instance_of(Purest::Messages).to receive(:authenticated?).and_return(true)
   end
   describe '#get' do
     context 'when listing audit records' do
@@ -20,7 +20,7 @@ describe Purest::Message do
             }
           )
           .to_return(status: 200, body: JSON.generate([]), headers: {})
-        audit_messages = Purest::Message.get(audit: true)
+        audit_messages = Purest::Messages.get(audit: true)
       end
     end
   end
@@ -37,7 +37,7 @@ describe Purest::Message do
             }
           )
           .to_return(status: 200, body: JSON.generate([]), headers: {})
-        flagged_message = Purest::Message.update(id: 2, flagged: true)
+        flagged_message = Purest::Messages.update(id: 2, flagged: true)
       end
     end
   end
