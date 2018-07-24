@@ -9,7 +9,7 @@ This started as sort of a labor of love/learning exercise, and sort of blossomed
 
 2) I am not affiliated with Pure Storage, beyond the fact that my company uses their product.
 
-3) This isn't done. What I think of as the 'core' functionality is there- you can manipulate volumes, hosts, and host groups, along with the array itself. I still need to add in classes for ProtectionGroups, Alerts/Messages, SNMP Manager Connections, SSL, Network Interfaces, Hardware, Apps, and Users.
+3) While all of the classes exist, currently only up to API version 1.11 is supported. 
 
 ## Requirements
 
