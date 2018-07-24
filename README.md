@@ -9,7 +9,7 @@ This started as sort of a labor of love/learning exercise, and sort of blossomed
 
 2) I am not affiliated with Pure Storage, beyond the fact that my company uses their product.
 
-3) While all of the classes exist, currently only up to API version 1.11 is supported. 
+3) While all of the classes exist, currently only up to API version 1.11 is supported.
 
 ## Requirements
 
@@ -339,7 +339,7 @@ Purest::PhysicalArray.update(new_name: 'new_name')
 Disconnect the current array from a specified array:
 ```ruby
 # Given that your pure is purehost.yourdomain.com, as defined in the config block above
-# Disconnect purehost2.yourdomain.com from yours
+# Disconnect purehost2.yourdomain.com from purehost.yourdomain.com
 Purest::PhysicalArray.delete(name: 'purehost2.yourdomain.com')
 ```
 
@@ -409,7 +409,7 @@ Purest::SNMP.create(name: 'snmp-manager1', host: 'snmp.yourdomain.com')
 Purest::SNMP.create(name: 'snmp-manager1', host: '111.11.11.111:222')
 
 # For those brave few; the strong souls using IPv6 with a custom port
-Purest::SNMP.create(:name: 'snmp-manager1', :host: '[2001:db8:0:1]:222')
+Purest::SNMP.create(name: 'snmp-manager1', host: '[2001:db8:0:1]:222')
 ```
 
 Updating an existing SNMP manager
