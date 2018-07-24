@@ -8,12 +8,19 @@ require 'purest'
 require 'webmock/rspec'
 require 'fakes-rspec'
 
-API_VERSIONS = ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '1.10', '1.11']
-INTEGRATION = Psych.load_file(File.join(__dir__,'..','.integration.yaml'))
+if ENV['API_VERSION']
+  API_VERSIONS = ENV['API_VERSION'].include?(',') ? ENV['API_VERSION'].split(',') : ENV['API_VERSION'].split
+elsif ENV['ALL_VERSIONS'] == 'true'
+  API_VERSIONS = ['1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7', '1.8', '1.9', '1.10', '1.11'].freeze
+else
+  API_VERSIONS = ['1.11'].freeze
+end
+
+INTEGRATION = Psych.load_file(File.join(__dir__, '..', '.integration.yaml'))
 
 RSpec.configure do |config|
   config.exclude_pattern = 'spec/integration/**.rb'
-  config.filter_run_excluding :integration => true
+  config.filter_run_excluding integration: true
   config.order = 'random'
   config.before(:each) do
     Purest.configure do |config|

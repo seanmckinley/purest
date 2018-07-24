@@ -1,3 +1,4 @@
 .integration.yaml
 Gemfile.lock
 .ruby-*
+*.gem

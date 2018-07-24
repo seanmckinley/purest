@@ -2,9 +2,8 @@
 
 module Purest
   # Base class for interacting with PURE storage REST API
-  class Rest < Purest::CustomExceptions
+  class Rest
     @access_methods = []
-    @get_params = []
 
     # Initialize the fadaray connection, create session unless one exists
     def initialize
@@ -15,11 +14,7 @@ module Purest
     # Check if session exists, and whether or not it's expired
     def authenticated?
       if defined? @session_expire
-        if Time.now.utc < @session_expire
-          true
-        else
-          false
-        end
+        Time.now.utc < @session_expire
       else
         false
       end
