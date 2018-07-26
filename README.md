@@ -21,7 +21,7 @@ This library requires you use Ruby 2.3 or above.
 
 ## Configuration
 
-```
+```rb
 require 'purest'
 
 Purest.configure do |config|
