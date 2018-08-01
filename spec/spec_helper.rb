@@ -16,7 +16,13 @@ else
   API_VERSIONS = ['1.11'].freeze
 end
 
-INTEGRATION = Psych.load_file(File.join(__dir__, '..', '.integration.yaml'))
+if RSpec.configuration.filter_manager.inclusions.rules[:integration] == true
+  begin
+    INTEGRATION = Psych.load_file(File.join(__dir__, '..', '.integration.yaml'))
+  rescue Errno::ENOENT
+    raise 'When running integration tests, you need a .integration.yaml file containing credentials and a URL'
+  end
+end
 
 RSpec.configure do |config|
   config.exclude_pattern = 'spec/integration/**.rb'
