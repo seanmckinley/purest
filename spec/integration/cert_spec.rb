@@ -12,13 +12,12 @@ describe Purest::Cert, integration: true do
     end
     context 'when creating a cert' do
       API_VERSIONS.each do |version|
-        Purest.configuration.api_version = version
         it "actually creates a cert on api version #{version}" do
+          Purest.configuration.api_version = version
           cert = Purest::Cert.create(name: 'integration-tester-cert', self_signed: true, state: 'WY')
           fetched_cert = Purest::Cert.get(name: 'integration-tester-cert')
 
-          binding.pry
-          expect(fetched_cert[:name]).to eq(cert[:name])
+          expect(fetched_cert[:state]).to eq('WY')
           Purest::Cert.delete(name: 'integration-tester-cert')
         end
       end

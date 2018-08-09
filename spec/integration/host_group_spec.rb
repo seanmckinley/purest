@@ -12,8 +12,8 @@ describe Purest::HostGroup, integration: true do
     end
     context 'when getting performance about a hostgroup' do
       API_VERSIONS.each do |version|
-        Purest.configuration.api_version = version
         it "actually gets hostgroup information on api version #{version}" do
+          Purest.configuration.api_version = version
           host_group = Purest::HostGroup.create(name: 'integration-tester-hgroup')
           host_group_fetched = Purest::HostGroup.get(name: 'integration-tester-hgroup', action: 'monitor')
 
@@ -27,8 +27,8 @@ describe Purest::HostGroup, integration: true do
     end
     context 'when creating a hostgroup' do
       API_VERSIONS.each do |version|
-        Purest.configuration.api_version = version
         it "actually creates a hostgroup on api version #{version}" do
+          Purest.configuration.api_version = version
           host_group = Purest::HostGroup.create(name: 'integration-tester-hgroup')
           host_group_fetched = Purest::HostGroup.get(name: 'integration-tester-hgroup')
           expect(host_group_fetched[:name]).to eq('integration-tester-hgroup')
@@ -39,8 +39,8 @@ describe Purest::HostGroup, integration: true do
     end
     context 'when updating a hostgroup' do
       API_VERSIONS.each do |version|
-        Purest.configuration.api_version = version
         it "actually creates a hostgroup on api version #{version}" do
+          Purest.configuration.api_version = version
           Purest::HostGroup.delete(name: 'integration-tester-hgroup')
           host_group = Purest::HostGroup.create(name: 'integration-tester-hgroup')
           host_group_updated = Purest::HostGroup.update(name: 'integration-tester-hgroup', new_name: 'integration-tester-hgroup-renamed')
