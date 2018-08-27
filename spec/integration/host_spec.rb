@@ -12,8 +12,8 @@ describe Purest::Host, integration: true do
     end
     context 'when creating a host' do
       API_VERSIONS.each do |version|
-        Purest.configuration.api_version = version
         it "actually creates a host on api version #{version}" do
+          Purest.configuration.api_version = version
           host = Purest::Host.create(name: 'integration-tester-host')
           fetched_host = Purest::Host.get(name: 'integration-tester-host')
 
@@ -32,8 +32,8 @@ describe Purest::Host, integration: true do
     end
     context 'when updating a host' do
       API_VERSIONS.each do |version|
-        Purest.configuration.api_version = version
         it "actually renames a host on api version #{version}" do
+          Purest.configuration.api_version = version
           host = Purest::Host.create(name: 'integration-tester-host')
           host_renamed = Purest::Host.update(name: 'integration-tester-host', new_name: 'integration-tester-host-renamed')
           fetched_renamed_host = Purest::Host.get(name: host_renamed[:name])

@@ -2,9 +2,9 @@
 
 module Purest
   class Cert < Purest::APIMethods
-    @access_methods = %i[get update]
+    @access_methods = %i[get create update delete]
 
-    GET_PARAMS = %i[certificate common_name country email
+    GET_PARAMS = %i[ca_certificate certificate common_name country email
                     intermediate_certificate locality organization
                     organizational_unit state].freeze
 
@@ -16,7 +16,15 @@ module Purest
       end
     end
 
+    def create(options = nil)
+      super(options, 'cert')
+    end
+
     def update(options = nil)
+      super(options, 'cert')
+    end
+
+    def delete(options = nil)
       super(options, 'cert')
     end
   end
