@@ -9,7 +9,7 @@ This started as sort of a labor of love/learning exercise, and sort of blossomed
 
 2) I am not affiliated with Pure Storage, beyond the fact that my company uses their product.
 
-3) While all of the classes exist, currently only up to API version 1.11 is supported.
+3) While all of the classes exist, currently only up to API version 1.12 is 'officially' supported- meaning it may work on newer versions, but I can't verify since I've only been able to develop against versions 1.12 and lower.
 
 ## Requirements
 
@@ -18,6 +18,11 @@ To be captain obvious, this does require you have access to a Pure Storage array
 This library requires you use Ruby 2.3 or above.
 
 # Usage
+
+## Installation
+```
+gem install purest
+```
 
 ## Configuration
 
@@ -34,7 +39,7 @@ end
 ```
 
 ## API options
-First: Authentication and session management is handled behind the scenes, you just need to supply your username/password in the configuration block (as shown in the example above). That's it.
+First: Authentication and session management are handled behind the scenes, you just need to supply your username/password in the configuration block (as shown in the example above). That's it.
 
 Second: The various class methods of this gem turn the provided options into HTTP parameters, and are
 named accordingly. For instance, ```Purest::Volume.get({:snap: true})``` translates
