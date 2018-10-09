@@ -11,13 +11,40 @@ This started as sort of a labor of love/learning exercise, and sort of blossomed
 
 3) While all of the classes exist, currently only up to API version 1.12 is 'officially' supported- meaning it may work on newer versions, but I can't verify since I've only been able to develop against versions 1.12 and lower.
 
+Table of contents
+=================
+
+<!--ts-->
+   * [Requirements](#requirements)
+   * [Installation](#installation)
+   * [Configuration](#configuration)
+   * [Usage](#usage)
+      * [Alerts](#alerts)
+      * [Apps](#app)
+      * [Certs](#cert)
+      * [Directory Service](#directory-service)
+      * [DNS](#dns)
+      * [Drives](#drive-information)
+      * [Hardware](#hardware)
+      * [Hosts](#hosts)
+      * [Host Groups](#host-groups)
+      * [Messages](#messages)
+      * [Network](#network)
+      * [Physical Arrays](#physical-arrays)
+      * [Ports](#port)
+      * [Protection Groups](#protection-groups)
+      * [SNMP](#snmp)
+      * [Subnets](#subnet)
+      * [Users](#users)
+      * [Volumes](#volumes)
+   * [Specs](#specs)
+<!--te-->
+
 ## Requirements
 
 To be captain obvious, this does require you have access to a Pure Storage array.
 
 This library requires you use Ruby 2.3 or above.
-
-# Usage
 
 ## Installation
 ```
@@ -25,7 +52,6 @@ gem install purest
 ```
 
 ## Configuration
-
 ```rb
 require 'purest'
 
@@ -49,7 +75,7 @@ https://purehost.yourdomain.com/static/0/help/rest/.
 
 Below I'll provide a large group of examples, but I won't be detailing every single method call with all of its possible options, for that I will again refer you to Pure's REST API docs.
 
-# Examples
+# Usage
 
 ## Alerts
 Get information about alerts/alerting
