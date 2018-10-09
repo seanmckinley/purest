@@ -18,6 +18,26 @@ Table of contents
    * [Requirements](#requirements)
    * [Installation](#installation)
    * [Configuration](#configuration)
+   * [Usage](#usage)
+      * [Alerts](#alerts)
+      * [Apps](#app)
+      * [Certs](#cert)
+      * [Directory Service](#directory-service)
+      * [DNS](#dns)
+      * [Drives](#drive-information)
+      * [Hardware](#hardware)
+      * [Hosts](#hosts)
+      * [Host Groups](#host-groups)
+      * [Messages](#messages)
+      * [Network](#network)
+      * [Physical Arrays](#physical-arrays)
+      * [Ports](#port)
+      * [Protection Groups](#protection-groups)
+      * [SNMP](#snmp)
+      * [Subnets](#subnet)
+      * [Users](#users)
+      * [Volumes](#volumes)
+   * [Specs](#specs)
 <!--te-->
 
 ## Requirements
@@ -55,7 +75,7 @@ https://purehost.yourdomain.com/static/0/help/rest/.
 
 Below I'll provide a large group of examples, but I won't be detailing every single method call with all of its possible options, for that I will again refer you to Pure's REST API docs.
 
-# Examples
+# Usage
 
 ## Alerts
 Get information about alerts/alerting
