@@ -11,13 +11,20 @@ This started as sort of a labor of love/learning exercise, and sort of blossomed
 
 3) While all of the classes exist, currently only up to API version 1.12 is 'officially' supported- meaning it may work on newer versions, but I can't verify since I've only been able to develop against versions 1.12 and lower.
 
+Table of contents
+=================
+
+<!--ts-->
+   * [Requirements](#requirements)
+   * [Installation](#installation)
+   * [Configuration](#configuration)
+<!--te-->
+
 ## Requirements
 
 To be captain obvious, this does require you have access to a Pure Storage array.
 
 This library requires you use Ruby 2.3 or above.
-
-# Usage
 
 ## Installation
 ```
@@ -25,7 +32,6 @@ gem install purest
 ```
 
 ## Configuration
-
 ```rb
 require 'purest'
 
