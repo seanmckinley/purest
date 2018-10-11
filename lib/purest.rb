@@ -5,7 +5,6 @@ require 'json'
 require 'faraday'
 require 'faraday_middleware'
 require 'faraday-cookie_jar'
-require 'pry'
 require 'psych'
 
 module Purest
