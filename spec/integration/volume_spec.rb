@@ -6,9 +6,8 @@ describe Purest::Volume, integration: true do
   describe '#get' do
     before(:each) do
       WebMock.allow_net_connect!
-      Purest.configuration.url = INTEGRATION['url']
-      Purest.configuration.username = INTEGRATION['username']
-      Purest.configuration.password = INTEGRATION['password']
+      Purest.configuration.url     = INTEGRATION['url']
+      Purest.configuration.api_key = INTEGRATION['api_key']
     end
     context 'No options passed' do
       API_VERSIONS.each do |version|
@@ -24,9 +23,8 @@ describe Purest::Volume, integration: true do
   describe '#post' do
     before(:each) do
       WebMock.allow_net_connect!
-      Purest.configuration.url = INTEGRATION['url']
-      Purest.configuration.username = INTEGRATION['username']
-      Purest.configuration.password = INTEGRATION['password']
+      Purest.configuration.url     = INTEGRATION['url']
+      Purest.configuration.api_key = INTEGRATION['api_key']
     end
     context 'when creating a volume' do
       API_VERSIONS.each do |version|
@@ -63,9 +61,8 @@ describe Purest::Volume, integration: true do
   describe '#put' do
     before(:each) do
       WebMock.allow_net_connect!
-      Purest.configuration.url = INTEGRATION['url']
-      Purest.configuration.username = INTEGRATION['username']
-      Purest.configuration.password = INTEGRATION['password']
+      Purest.configuration.url     = INTEGRATION['url']
+      Purest.configuration.api_key = INTEGRATION['api_key']
     end
     context 'when updating a volume' do
       API_VERSIONS.each do |version|
@@ -87,9 +84,8 @@ describe Purest::Volume, integration: true do
   describe '#delete' do
     before(:each) do
       WebMock.allow_net_connect!
-      Purest.configuration.url = INTEGRATION['url']
-      Purest.configuration.username = INTEGRATION['username']
-      Purest.configuration.password = INTEGRATION['password']
+      Purest.configuration.url     = INTEGRATION['url']
+      Purest.configuration.api_key = INTEGRATION['api_key']
     end
     context 'when deleting a volume' do
       API_VERSIONS.each do |version|

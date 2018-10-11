@@ -1,6 +1,6 @@
-# Purest (or Pure Rest, if you will) -- a simple gem for interacting with Pure Storage's REST API
+# Purest (or Pure Rest, if you will) -- a simple gem for interacting with Pure Storage's FlashArray REST API
 
-A simple to use library for Ruby, inspired by the WeAreFarmGeek's Diplomat gem (seriously, those guys are awesome), allowing for easy interaction with Pure Storage's REST API.
+A simple to use library for Ruby, inspired by the WeAreFarmGeek's Diplomat gem (seriously, those guys are awesome), allowing for easy interaction with Pure Storage's FlashArray REST API.
 
 ## Disclaimer
 This started as sort of a labor of love/learning exercise, and sort of blossomed into this. That being said, it means a few things:
@@ -51,25 +51,45 @@ This library requires you use Ruby 2.3 or above.
 gem install purest
 ```
 
+## Authentication
+Purest allows you to authenticate using two different methods, either username and password OR using your API key (you don't need both). See "Configration" below for examples.
+
 ## Configuration
+There are now two ways to configure Purest, the first is directly in your ruby code like so:
 ```rb
 require 'purest'
 
 Purest.configure do |config|
-  config.url = "https://purehost.yourdomain.com"
+  config.api_key = '1234-567-89'
+  config.api_version = '1.14'
   config.options = {ssl: { verify: true }}
-  config.api_version = '1.11'
-  config.username = 'api-enabled-user'
   config.password = 'password'
+  config.url = "https://purehost.yourdomain.com"
+  config.username = 'api-enabled-user'
 end
 ```
 
+The second method is to create a .purest.yaml file in your home directory (~/.purest.yaml) that looks like this:
+```yaml
+---
+api_key: '1234-567-89'
+api_version: '1.14'
+password: 'password'
+url: 'https://purehost.yourdomain.com'
+username: 'api-enabled-user'
+options:
+  ssl:
+    verify: true
+```
+
+This yaml file is loaded in when your code is executed and the values can be individually or wholesale overridden during runtime by using the first configuration method, if you so desire.
+
 ## API options
-First: Authentication and session management are handled behind the scenes, you just need to supply your username/password in the configuration block (as shown in the example above). That's it.
+First: Authentication and session management are handled behind the scenes, you just need to supply your username/password or API key in the configuration block or YAML file (as shown in the example above). That's it.
 
 Second: The various class methods of this gem turn the provided options into HTTP parameters, and are
 named accordingly. For instance, ```Purest::Volume.get({:snap: true})``` translates
-to http://purehost.yourdomain.com/api/1.11/volume?snap=true. For a full list
+to http://purehost.yourdomain.com/api/1.14/volume?snap=true. For a full list
 of options for a given class, Pure provides good documentation at:
 https://purehost.yourdomain.com/static/0/help/rest/.
 

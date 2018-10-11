@@ -6,9 +6,8 @@ describe Purest::Host, integration: true do
   describe '#post' do
     before(:each) do
       WebMock.allow_net_connect!
-      Purest.configuration.url = INTEGRATION['url']
-      Purest.configuration.username = INTEGRATION['username']
-      Purest.configuration.password = INTEGRATION['password']
+      Purest.configuration.url     = INTEGRATION['url']
+      Purest.configuration.api_key = INTEGRATION['api_key']
     end
     context 'when creating a host' do
       API_VERSIONS.each do |version|
@@ -26,9 +25,8 @@ describe Purest::Host, integration: true do
   describe '#put' do
     before(:each) do
       WebMock.allow_net_connect!
-      Purest.configuration.url = INTEGRATION['url']
-      Purest.configuration.username = INTEGRATION['username']
-      Purest.configuration.password = INTEGRATION['password']
+      Purest.configuration.url     = INTEGRATION['url']
+      Purest.configuration.api_key = INTEGRATION['api_key']
     end
     context 'when updating a host' do
       API_VERSIONS.each do |version|

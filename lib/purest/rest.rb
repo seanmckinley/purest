@@ -86,10 +86,11 @@ module Purest
     end
 
     def create_session
+      token = Purest.configuration.api_key || get_token
       raw_resp = @conn.post do |req|
         req.url "/api/#{Purest.configuration.api_version}/auth/session"
         req.params = {
-          "api_token": get_token
+          "api_token": token
         }
       end
 
