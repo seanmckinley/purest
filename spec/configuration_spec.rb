@@ -25,16 +25,18 @@ describe Purest do
     context 'Custom configuration' do
       it 'Allows for custom configuration' do
         Purest.configure do |c|
+          c.api_key = '1234-567-89'
+          c.options = { ssl: { verify: true } }
+          c.password = 'alma1wade'
           c.url = 'http://thevault.com'
           c.username = 'paxton.fettle'
-          c.password = 'alma1wade'
-          c.options = { ssl: { verify: true } }
         end
 
+        expect(Purest.configuration.api_key).to eq('1234-567-89')
+        expect(Purest.configuration.options).to eq(ssl: { verify: true })
+        expect(Purest.configuration.password).to eq('alma1wade')
         expect(Purest.configuration.url).to eq('http://thevault.com')
         expect(Purest.configuration.username).to eq('paxton.fettle')
-        expect(Purest.configuration.password).to eq('alma1wade')
-        expect(Purest.configuration.options).to eq(ssl: { verify: true })
       end
     end
   end
