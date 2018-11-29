@@ -44,7 +44,7 @@ Table of contents
 
 ## Requirements
 
-To be captain obvious, this does require you have access to a Pure Storage array.
+To be captain obvious, this does require you have access to a Pure Storage FlashArray.
 
 This library requires you use Ruby 2.3 or above.
 
