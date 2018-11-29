@@ -17,6 +17,7 @@ Table of contents
 <!--ts-->
    * [Requirements](#requirements)
    * [Installation](#installation)
+   * [Authentication](#authentication)
    * [Configuration](#configuration)
    * [Usage](#usage)
       * [Alerts](#alerts)
@@ -38,6 +39,7 @@ Table of contents
       * [Users](#users)
       * [Volumes](#volumes)
    * [Specs](#specs)
+   * [License](#license)
 <!--te-->
 
 ## Requirements
@@ -642,4 +644,7 @@ ALL_VERSIONS=true rspec -t integration
 ```
 
 
-It is worth mentioning, this generates a fair bit of work for your Pure array so...you've been warned. All of that being said, the integration testing is somewhat sparse at the moment
+It is worth mentioning, this generates a fair bit of work for your Pure array so...you've been warned. All of that being said, the integration testing is somewhat sparse at the moment.
+
+## License
+Purest is released under the [MIT License](https://opensource.org/licenses/MIT).
