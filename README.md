@@ -54,7 +54,7 @@ gem install purest
 ```
 
 ## Authentication
-Purest allows you to authenticate using two different methods, either username and password OR using your API key (you don't need both). See "Configration" below for examples.
+Purest allows you to authenticate using two different methods, either username and password OR using your API key (you don't need both). See "Configuration" below for examples. We recommend using the API key method as it is - slightly - more secure.
 
 ## Configuration
 There are now two ways to configure Purest, the first is directly in your ruby code like so:
@@ -65,9 +65,21 @@ Purest.configure do |config|
   config.api_key = '1234-567-89'
   config.api_version = '1.14'
   config.options = {ssl: { verify: true }}
-  config.password = 'password'
   config.url = "https://purehost.yourdomain.com"
+end
+```
+
+or with the user credentials method:
+
+```rb
+require 'purest'
+
+Purest.configure do |config|
   config.username = 'api-enabled-user'
+  config.password = 'password'
+  config.api_version = '1.14'
+  config.options = {ssl: { verify: true }}
+  config.url = "https://purehost.yourdomain.com"
 end
 ```
 
@@ -76,9 +88,19 @@ The second method is to create a .purest.yaml file in your home directory (~/.pu
 ---
 api_key: '1234-567-89'
 api_version: '1.14'
-password: 'password'
 url: 'https://purehost.yourdomain.com'
+options:
+  ssl:
+    verify: true
+```
+or with the user credentials method:
+
+```yaml
+---
 username: 'api-enabled-user'
+password: 'password'
+api_version: '1.14'
+url: 'https://purehost.yourdomain.com'
 options:
   ssl:
     verify: true
