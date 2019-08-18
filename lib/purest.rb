@@ -32,8 +32,8 @@ module Purest
 
   require_libs  'rest', 'api_methods', 'configuration', 'alerts', 'app', 'cert',
                 'directory_service', 'dns', 'drive', 'hardware', 'host',
-                'host_group', 'messages', 'network', 'physical_array', 'port',
-                'protection_group', 'snmp', 'subnet', 'users', 'volume'
+                'host_group', 'messages', 'network', 'physical_array', 'pod',
+                'port', 'protection_group', 'snmp', 'subnet', 'users', 'volume'
 
   self.configuration ||= Purest::Configuration.new
 

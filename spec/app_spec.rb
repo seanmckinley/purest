@@ -11,15 +11,7 @@ describe Purest::App do
   describe '#get' do
     context 'with no options' do
       it 'gets a list of array apps' do
-        stub_request(:get, "#{Purest.configuration.url}/api/1.11/app")
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
+        get_helper('/app')
         apps = Purest::App.get
       end
     end
