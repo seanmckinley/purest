@@ -11,27 +11,13 @@ describe Purest::Subnet do
   describe '#get' do
     context 'without any options' do
       it 'gets a list of array subnet attributes' do
-        stub_request(:get, "#{Purest.configuration.url}/api/1.11/subnet")
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
+        get_helper('/subnet')
         subnets = Purest::Subnet.get
       end
     end
     context 'when getting a specified subnet' do
       it 'gets a list of array subnet attributes' do
-        stub_request(:get, "#{Purest.configuration.url}/api/1.11/subnet/subnet10")
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
+        get_helper('/subnet/subnet10')
         subnets = Purest::Subnet.get(name: 'subnet10')
       end
     end

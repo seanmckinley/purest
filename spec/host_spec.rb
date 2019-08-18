@@ -55,44 +55,8 @@ describe Purest::Host do
   describe '#delete' do
     context 'when deleting a host' do
       it 'should delete to the correct url' do
-        stub_request(:delete, 'https://purehost.com/api/1.11/host/host123')
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
-
+        delete_helper(path: '/host/host123')
         deleted_host = Purest::Host.delete(name: 'host123')
-      end
-    end
-    context 'when removing a host from a protection group' do
-      it 'should delete to the correct url' do
-        stub_request(:delete, 'https://purehost.com/api/1.11/host/host123/pgroup/pgroup123')
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
-
-        removed_pgroup = Purest::Host.delete(name: 'host123', protection_group: 'pgroup123')
-      end
-    end
-    context 'when breaking the connection between a host and volume' do
-      it 'should delete to the correct url' do
-        stub_request(:delete, 'https://purehost.com/api/1.11/host/host123/volume/volume123')
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
-
-        removed_pgroup = Purest::Host.delete(name: 'host123', volume: 'volume123')
       end
     end
   end
@@ -101,59 +65,15 @@ describe Purest::Host do
     context 'when creating a host' do
       context 'with no params' do
         it 'posts to the correct url' do
-          stub_request(:post, 'https://purehost.com/api/1.11/host/new_host')
-            .with(
-              body: '{"name":"new_host"}',
-              headers: {
-                'Accept' => '*/*',
-                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                'Content-Type' => 'application/json',
-              }
-            )
-            .to_return(status: 200, body: JSON.generate([]), headers: {})
+          post_helper(path: '/host/new_host', body: '{"name":"new_host"}')
           new_host = Purest::Host.create(name: 'new_host')
-        end
-      end
-      context 'with an iqnlist' do
-        it 'posts to the correct url, with the correct params' do
-          stub_request(:post, 'https://purehost.com/api/1.11/host/new_host')
-            .with(
-              body: '{"name":"new_host","iqnlist":["1"]}',
-              headers: {
-                'Accept' => '*/*',
-                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                'Content-Type' => 'application/json',
-              }
-            )
-            .to_return(status: 200, body: JSON.generate([]), headers: {})
-          new_host = Purest::Host.create(name: 'new_host', iqnlist: ['1'])
         end
       end
     end
     context 'when adding a host to a protection group' do
       it 'posts to the correct url' do
-        stub_request(:post, 'https://purehost.com/api/1.11/host/host123/pgroup/pgroup123')
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
+        post_helper(path: '/host/host123/pgroup/pgroup123')
         new_pgroup = Purest::Host.create(name: 'host123', protection_group: 'pgroup123')
-      end
-    end
-    context 'when connecting a volume to a host' do
-      it 'posts to the correct url' do
-        stub_request(:post, 'https://purehost.com/api/1.11/host/host123/volume/volume1')
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
-        new_pgroup = Purest::Host.create(name: 'host123', volume: 'volume1')
       end
     end
   end
