@@ -6,13 +6,18 @@ describe Purest::Rest do
   describe '#get_token' do
     let(:faraday) { fake }
     before(:each) do
+
+      stub_request(:post, 'https://purehost.com/api/1.11/auth/session?api_token=1234-567-89')
+        .to_return(status: 200, body: "{\"username\": \"#{Purest.configuration.username}\"}", headers: {
+                     'set-cookie' => "session=.super-duper-cookie; Expires=Sat, #{Time.now.utc + 30 * 60}; HttpOnly; Path=/"
+                   })
+
       stub_request(:post, 'https://purehost.com/api/1.11/auth/apitoken?password=alma1wade&username=paxton.fettle')
         .with(
           headers: {
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Content-Length' => '0',
-            'User-Agent' => 'Faraday v0.15.2'
           }
         )
         .to_return(status: 200, body: '{"api_token": "sup3r-s4fe-t0k3n"}', headers: {})
@@ -23,7 +28,6 @@ describe Purest::Rest do
             'Accept' => '*/*',
             'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
             'Content-Length' => '0',
-            'User-Agent' => 'Faraday v0.15.2'
           }
         )
         .to_return(status: 200, body: "{\"username\": \"#{Purest.configuration.username}\"}", headers: {

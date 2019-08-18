@@ -11,15 +11,7 @@ describe Purest::Messages do
   describe '#get' do
     context 'when listing audit records' do
       it 'gets to the correct URL' do
-        stub_request(:get, "#{Purest.configuration.url}/api/1.11/message?audit=true")
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
+        get_helper('/message?audit=true')
         audit_messages = Purest::Messages.get(audit: true)
       end
     end
@@ -27,16 +19,7 @@ describe Purest::Messages do
   describe '#put' do
     context 'when flagging a message' do
       it 'puts to the correct URL' do
-        stub_request(:put, "#{Purest.configuration.url}/api/1.11/message/2")
-          .with(
-            body: '{"flagged":true}',
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
+        put_helper(path: '/message/2', body: '{"flagged":true}')
         flagged_message = Purest::Messages.update(id: 2, flagged: true)
       end
     end

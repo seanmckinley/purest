@@ -16,7 +16,6 @@ describe Purest::Subnet do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
             }
           )
           .to_return(status: 200, body: JSON.generate([]), headers: {})
@@ -30,7 +29,6 @@ describe Purest::Subnet do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
             }
           )
           .to_return(status: 200, body: JSON.generate([]), headers: {})

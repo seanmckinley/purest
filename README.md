@@ -3,13 +3,13 @@
 A simple to use library for Ruby, inspired by the WeAreFarmGeek's Diplomat gem (seriously, those guys are awesome), allowing for easy interaction with Pure Storage's FlashArray REST API.
 
 ## Disclaimer
-This started as sort of a labor of love/learning exercise, and sort of blossomed into this. That being said, it means a few things:
+This started as a labor of love/learning exercise, and sort of blossomed into this. That being said, it means a few things:
 
 1) I may have made some stupid mistakes in here, if so..so be it. Raise them in issues or submit PRs, and I'll gladly fix/merge if I feel the code submitted carries the spirit of my little project. Odds are I won't reject a PR unless you try to rewrite everything for some obtuse reason I don't agree with.
 
-2) I am not affiliated with Pure Storage, beyond the fact that my company uses their product.
+2) I am not an employee of Pure Storage, just a random nerd.
 
-3) While all of the classes exist, currently only up to API version 1.12 is 'officially' supported- meaning it may work on newer versions, but I can't verify since I've only been able to develop against versions 1.12 and lower.
+3) While all of the classes exist, currently only up to API version 1.16 is 'officially' supported- meaning it may work on newer versions, but I can't verify since I've only been able to develop against versions 1.16 and lower.
 
 Table of contents
 =================
@@ -32,6 +32,7 @@ Table of contents
       * [Messages](#messages)
       * [Network](#network)
       * [Physical Arrays](#physical-arrays)
+      * [Pods](#pod)
       * [Ports](#port)
       * [Protection Groups](#protection-groups)
       * [SNMP](#snmp)
@@ -63,7 +64,7 @@ require 'purest'
 
 Purest.configure do |config|
   config.api_key = '1234-567-89'
-  config.api_version = '1.14'
+  config.api_version = '1.16'
   config.options = {ssl: { verify: true }}
   config.url = "https://purehost.yourdomain.com"
 end
@@ -77,7 +78,7 @@ require 'purest'
 Purest.configure do |config|
   config.username = 'api-enabled-user'
   config.password = 'password'
-  config.api_version = '1.14'
+  config.api_version = '1.16'
   config.options = {ssl: { verify: true }}
   config.url = "https://purehost.yourdomain.com"
 end
@@ -87,7 +88,7 @@ The second method is to create a .purest.yaml file in your home directory (~/.pu
 ```yaml
 ---
 api_key: '1234-567-89'
-api_version: '1.14'
+api_version: '1.16'
 url: 'https://purehost.yourdomain.com'
 options:
   ssl:
@@ -99,7 +100,7 @@ or with the user credentials method:
 ---
 username: 'api-enabled-user'
 password: 'password'
-api_version: '1.14'
+api_version: '1.16'
 url: 'https://purehost.yourdomain.com'
 options:
   ssl:
@@ -113,11 +114,11 @@ First: Authentication and session management are handled behind the scenes, you 
 
 Second: The various class methods of this gem turn the provided options into HTTP parameters, and are
 named accordingly. For instance, ```Purest::Volume.get({:snap: true})``` translates
-to http://purehost.yourdomain.com/api/1.14/volume?snap=true. For a full list
+to http://purehost.yourdomain.com/api/1.16/volume?snap=true. For a full list
 of options for a given class, Pure provides good documentation at:
 https://purehost.yourdomain.com/static/0/help/rest/.
 
-Below I'll provide a large group of examples, but I won't be detailing every single method call with all of its possible options, for that I will again refer you to Pure's REST API docs.
+Below I'll provide a large group of examples but I won't be detailing every single method call with all of its possible options, for that I will again refer you to Pure's REST API docs.
 
 # Usage
 
@@ -418,6 +419,51 @@ Disconnect the current array from a specified array:
 Purest::PhysicalArray.delete(name: 'purehost2.yourdomain.com')
 ```
 
+## Pod
+Getting attributes or displaying performance metrics for pods
+```ruby
+# Get a list of pods and their details
+Purest::Pod.get
+
+# Show space information for each pod
+Purest::Pod.get(space: true)
+
+# Get a list of attributes for a specific pod
+Purest::Pod.get(name: 'superpod')
+```
+
+Creating a new pod
+```ruby
+# Basic pod creation
+Purest::Pod.create(name: 'superpod2')
+
+# Create a pod with a failover preference
+Purest::Pod.create(name: 'superpod2', failover_preference: ['array1'])
+```
+
+Stretching a pod to a peer array
+```ruby
+Purest::Pod.create(name: 'superpod2', array: 'array1')
+```
+
+Updating a pod
+```ruby
+Purest::Pod.update(name: 'superpod2', failover_preference: ['array2'])
+```
+
+Unstretching a pod from a peer array
+```ruby
+Purest::Pod.delete(name: 'superpod2', array: 'array1')
+```
+
+Deleting a pod
+```ruby
+Purest::Pod.delete(name: 'superpod2')
+
+# Eradicating a pod
+Purest::Pod.delete(name: 'superpod2', eradicate: true)
+```
+
 ## Port
 Getting information about ports, 'cause that's all you get to do
 ```ruby
@@ -652,7 +698,7 @@ url: 'https://yoursuperawesomepurehost.com'
 
 There are a few ways you can execute the integration tests:
 ```
-# This will execute against the latest API version the gem is aware of, right now that is 1.11
+# This will execute against the latest API version the gem is aware of, right now that is 1.16
 rspec -t integration
 
 # This will execute against a specific version
@@ -666,7 +712,7 @@ ALL_VERSIONS=true rspec -t integration
 ```
 
 
-It is worth mentioning, this generates a fair bit of work for your Pure array so...you've been warned. All of that being said, the integration testing is somewhat sparse at the moment.
+It is worth mentioning that this generates a fair bit of work for your Pure array so...you've been warned. All of that being said, the integration testing is somewhat sparse at the moment.
 
 ## License
 Purest is released under the [MIT License](https://opensource.org/licenses/MIT).

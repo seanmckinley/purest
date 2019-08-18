@@ -12,72 +12,30 @@ describe Purest::Host do
   describe '#get' do
     context 'No options passed' do
       it 'should get back a list of hosts on an array' do
-        stub_request(:get, 'https://purehost.com/api/1.11/host')
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
+        get_helper('/host')
         hosts = Purest::Host.get
         expect(hosts).to be_an(Array)
       end
     end
     context 'when passing action=monitor' do
-      let(:json) do
-        JSON.generate([{ "input_per_sec": 0, "name": 'h1' }])
-      end
       it 'should return monitoring details' do
-        stub_request(:get, 'https://purehost.com/api/1.11/host?action=monitor')
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
-            }
-          )
-          .to_return(status: 200, body: json, headers: {})
+        get_helper('/host?action=monitor')
         hosts = Purest::Host.get(action: 'monitor')
 
         expect(hosts).to be_an(Array)
       end
     end
     context 'when listing information about space consumpion for a host' do
-      let(:json) do
-        JSON.generate("data_reduction": 1.0, "name": 'h1', "snapshots": 0)
-      end
-
       it 'should get with the correct url' do
-        stub_request(:get, 'https://purehost.com/api/1.11/host/h1?space=true')
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
-            }
-          )
-          .to_return(status: 200, body: json, headers: {})
-
+        get_helper('/host/h1?space=true', {})
         host_snapshots = Purest::Host.get(name: 'h1', space: true)
 
         expect(host_snapshots).to be_a(Hash)
-        expect(host_snapshots[:snapshots]).to eq(0)
       end
     end
     context 'when listing volumes associated with a specified host' do
       it 'should get with the correct url' do
-        stub_request(:get, 'https://purehost.com/api/1.11/host/h1/volume')
-          .with(
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
-
+        get_helper('/host/h1/volume')
         host_snapshots = Purest::Host.get(name: 'h1', show_volume: true)
 
         expect(host_snapshots).to be_an(Array)
@@ -88,17 +46,7 @@ describe Purest::Host do
   describe '#put' do
     context 'when renaming a host' do
       it 'should put to the correct url, with the correct params' do
-        stub_request(:put, 'https://purehost.com/api/1.11/host/host123')
-          .with(
-            body: '{"name":"host456"}',
-            headers: {
-              'Accept' => '*/*',
-              'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
-            }
-          )
-          .to_return(status: 200, body: JSON.generate([]), headers: {})
-
+        put_helper(path: '/host/host123', body: '{"name":"host456"}')
         renamed_host = Purest::Host.update(name: 'host123', new_name: 'host456')
       end
     end
@@ -112,7 +60,6 @@ describe Purest::Host do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
             }
           )
           .to_return(status: 200, body: JSON.generate([]), headers: {})
@@ -127,7 +74,6 @@ describe Purest::Host do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
             }
           )
           .to_return(status: 200, body: JSON.generate([]), headers: {})
@@ -142,7 +88,6 @@ describe Purest::Host do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
             }
           )
           .to_return(status: 200, body: JSON.generate([]), headers: {})
@@ -163,7 +108,6 @@ describe Purest::Host do
                 'Accept' => '*/*',
                 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
                 'Content-Type' => 'application/json',
-                'User-Agent' => 'Faraday v0.15.2'
               }
             )
             .to_return(status: 200, body: JSON.generate([]), headers: {})
@@ -179,7 +123,6 @@ describe Purest::Host do
                 'Accept' => '*/*',
                 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
                 'Content-Type' => 'application/json',
-                'User-Agent' => 'Faraday v0.15.2'
               }
             )
             .to_return(status: 200, body: JSON.generate([]), headers: {})
@@ -194,7 +137,6 @@ describe Purest::Host do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
             }
           )
           .to_return(status: 200, body: JSON.generate([]), headers: {})
@@ -208,7 +150,6 @@ describe Purest::Host do
             headers: {
               'Accept' => '*/*',
               'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'User-Agent' => 'Faraday v0.15.2'
             }
           )
           .to_return(status: 200, body: JSON.generate([]), headers: {})

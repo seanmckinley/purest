@@ -70,9 +70,9 @@ module Purest
 
     private
 
-    GET_PARAMS.each do |attribute|
-      define_method :"use_#{attribute}" do |options|
-        options ? use_named_parameter(attribute, options[attribute]) : []
+    GET_PARAMS.each do |param|
+      define_method :"use_#{param}" do |options|
+        options ? use_named_parameter(param, options[param]) : []
       end
     end
   end
