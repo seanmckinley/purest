@@ -15,11 +15,11 @@ Gem::Specification.new 'purest', Purest::VERSION do |s|
   s.add_development_dependency 'fivemat', '~> 1.3'
   s.add_development_dependency 'gem-release', '~> 2.0.1'
   s.add_development_dependency 'pry', '~> 0.11.3'
-  s.add_development_dependency 'rspec', '~> 3.7.0'
+  s.add_development_dependency 'rspec', '~> 3.11'  
   s.add_development_dependency 'rubocop', '~> 0.57.2'
   s.add_development_dependency 'webmock', '~> 3.4.0'
 
-  s.add_runtime_dependency 'faraday', '~> 0.15.2'
-  s.add_runtime_dependency 'faraday-cookie_jar', '~> 0.0.6'
-  s.add_runtime_dependency 'faraday_middleware', '~> 0.12.2'
+  s.add_runtime_dependency 'faraday', '~> 1.0.0'
+  s.add_runtime_dependency 'faraday-cookie_jar', '~> 0.0.7'
+  s.add_runtime_dependency 'faraday_middleware', '~> 1.0'
 end
